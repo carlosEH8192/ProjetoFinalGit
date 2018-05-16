@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Alcides Maya</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="<?= $bootstrap_css; ?>" />
+    <link rel="stylesheet" href="<?= $adjust; ?>" />
+    <link rel="stylesheet" href="<?= $colors; ?>" />
+    <link rel="stylesheet" href="<?= $icones; ?>" />
+</head>
+<body background="<?= $background; ?>">
+    <!-- CABEÇALHO (ISOLADO EM PHP) -->
+    <?php
+        include_once($cb_nav);
+    ?>
+
+    <!-- CAROUSEL (ISOLADO EM PHP) -->
+    <?php
+        include_once("carousel.html");
+    ?>
+
+    <!-- THUMBS (ISOLADO EM PHP) -->
+    <?php
+        include_once("thumbs.html");
+    ?>
+
+    <!-- MODAL (ISOLADO EM PHP) -->
+    <?php
+        include_once("modal.html");
+    ?>
+
+    <!-- RODAPÉ (ISOLADO EM PHP) -->
+    <?php
+        include_once($ft_nav);
+    ?>
+
+    <script src="<?= $jquery; ?>"></script>
+    <script src="<?= $bootstrap_js; ?>"></script>
+</body>
+</html>

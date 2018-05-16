@@ -1,0 +1,1 @@
+Logo alcides com animação na esfera (girar na linha do vetor) P/ Loading;

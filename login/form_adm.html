@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Login Administrador</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="<?= $bootstrap_css; ?>" />
+    <link rel="stylesheet" href="<?= $adjust; ?>" />
+    <link rel="stylesheet" href="<?= $colors; ?>" />
+    <link rel="stylesheet" href="<?= $icones; ?>" />
+    <link rel="stylesheet" href="<?= $overflow; ?>" />
+    <link rel="stylesheet" href="<?= $form; ?>" />
+</head>
+<body background="<?= $background; ?>">
+    <?php
+        include_once($cb_nav);
+    ?>
+
+    <div class="container-fluid">
+        <h1 class="col-sm-12">Login Administrador</h1>
+
+        <form action="loga_adm.php" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label for="inp-username" class="col-sm-1 control-label">
+                    Username: 
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control"
+                           id="inp-username" name="username"
+                           placeholder="Username" required
+                           autofocus />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inp-senha" class="col-sm-1 control-label">
+                    Senha: 
+                </label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control"
+                           id="inp-senha" name="senha"
+                           placeholder="Senha" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-2">
+                    <input type="submit" class="btn btn-default"
+                           name="submit" value="Logar"
+                           required />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <?php
+        include_once($ft_nav);
+    ?>
+
+    <script src="<?= $jquery; ?>"></script>
+    <script src="<?= $bootstrap_js; ?>"></script>
+</body>
+</html>
