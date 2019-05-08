@@ -1,29 +1,32 @@
-<?php // => /defaultPaths/paths.php
-    // CAMINHOS PARA HTML
-    const ROOT_HTML = "/ProjetoFinalGit";
+<?php
+    const RAIZ_PROJETO = "/ProjetoFinalGit";
 
-    $jquery = ROOT_HTML."/jquery/jquery.min.js";
-    $bootstrap = ROOT_HTML."/bootstrap";
+    // Caminhos auxiliares;
+    $bootstrap = RAIZ_PROJETO."/bootstrap";
+    $img = RAIZ_PROJETO."/img";
+    $default_css = RAIZ_PROJETO."/default_css";
+    $default_navbars = RAIZ_PROJETO."/defaultNavs";
+
+    // Caminhos completos para arquivos 'js' e 'css' utilizados em muitas páginas do Website;
+    $jquery = RAIZ_PROJETO."/jquery/jquery.min.js";
+    $colors = RAIZ_PROJETO."/colors/colors.css";
+
     $bootstrap_css = $bootstrap."/css/bootstrap.min.css";
-    $bootstrap_js = $bootstrap."/js/bootstrap.min.js";    
+    $bootstrap_js = $bootstrap."/js/bootstrap.min.js";
 
-    $adjust = ROOT_HTML."/img/adjust.css";
-    $colors = ROOT_HTML."/colors/colors.css";
-    $icones = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css".
-        "/font-awesome.min.css";
+    $adjust = $img."/adjust.css";
+    $logo_adjust = $img."/logo/logo-adjust.css";
+    $background = $img."/background.png";
 
-    $logo_adjust = ROOT_HTML."/img/logo/logo-adjust.css";
-    
-    $overflow = ROOT_HTML."/default_css/overflow_y.css";
-    $form = ROOT_HTML."/default_css/form.css";
+    $overflow = $default_css."/overflow_y.css";
+    $form = $default_css."/form.css";
 
-    $background = ROOT_HTML."/img/background.png";
+    $icones = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 
-    // CAMINHOS PARA INCLUDE
-    $def_navs = "defaultNavs";
-    $cb_nav = $def_navs."/cb_nav.php";
-    $ft_nav = $def_navs."/ft_nav.php";
+    // Caminhos completos para arquivos '.php' que contém Navbars utilizadas em muitas páginas do Website;
+    $cb_nav = $default_navbars."/cb_nav.php";
+    $ft_nav = $default_navbars."/ft_nav.php";
 
-    $adm_cb_nav = $def_navs."/adm_cb_nav.php";
-    $prof_cb_nav = $def_navs."/prof_cb_nav.php";
+    $adm_cb_nav = $default_navbars."/adm_cb_nav.php";
+    $prof_cb_nav = $default_navbars."/prof_cb_nav.php";
 ?>
