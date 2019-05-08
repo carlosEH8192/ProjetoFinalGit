@@ -13,65 +13,41 @@
     <link rel="stylesheet" href="index.css" />
 </head>
 <body background="<?= $background; ?>">
-	<?php
-        include_once($cb_nav);
-    ?>
+	<?php include_once($cb_nav); // Navbar do Cabecalho (arquivo isolado); ?>
 
     <div class="container-fluid">
         <h1 class="col-sm-12">Envie-nos uma mensagem</h1>
 
-        <form class="form-horizontal" onsubmit="return enviaContato(this)" method="post">
+        <form class="form-horizontal" onsubmit="enviaEmail();" method="post">
             <!-- NOME COMPLETO -->
             <div class="form-group">
-                <label for="inp-nome-completo"
-                        class="col-sm-2 control-label">
-                    Seu nome completo: 
-                </label>
+                <label for="inp-nome-completo" class="col-sm-2 control-label">Seu nome completo: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" 
-                        id="inp-nome-completo" name="nome-completo"
-                        placeholder="Nome completo" required
-                        autofocus />
+                    <input type="text" class="form-control" id="inp-nome-completo" name="nome-completo" placeholder="Nome completo" required autofocus />
                 </div>
             </div>
 
             <!-- E-MAIL -->
             <div class="form-group">
-                <label for="inp-email"
-                        class="col-sm-2 control-label">
-                    Seu e-mail: 
-                </label>
+                <label for="inp-email" class="col-sm-2 control-label">Seu e-mail: </label>
                 <div class="col-sm-3">
-                    <input type="email" class="form-control" 
-                        id="inp-email" name="email"
-                        placeholder="E-mail" required />
+                    <input type="email" class="form-control" id="inp-email" name="email" placeholder="E-mail" required />
                 </div>
             </div>
 
             <!-- ASSUNTO -->
             <div class="form-group">
-                <label for="inp-assunto"
-                        class="col-sm-2 control-label">
-                    Assunto: 
-                </label>
+                <label for="inp-assunto" class="col-sm-2 control-label">Assunto: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" 
-                        id="inp-assunto" name="assunto"
-                        placeholder="Assunto" required
-                        autofocus />
+                    <input type="text" class="form-control" id="inp-assunto" name="assunto" placeholder="Assunto" required autofocus />
                 </div>
             </div>
 
             <!-- MENSAGEM -->
             <div class="form-group">
-                <label for="txt-mensagem"
-                        class="col-sm-2 control-label">
-                    Mensagem: 
-                </label>
+                <label for="txt-mensagem" class="col-sm-2 control-label">Mensagem: </label>
                 <div class="col-sm-3">
-                    <textarea class="form-control" id="txt-mensagem"
-                                name="mensagem" rows="4"
-                                placeholder="Mensagem" required></textarea>
+                    <textarea class="form-control" id="txt-mensagem" name="mensagem" rows="4" placeholder="Mensagem" required></textarea>
                 </div>
             </div>
 
@@ -85,12 +61,10 @@
         </form>
     </div>
 
-    <?php
-        include_once($ft_nav);
-    ?>
+    <?php include_once($ft_nav); // Navbar do Rodape (arquivo isolado); ?>
 
     <script src="<?= $jquery; ?>"></script>
     <script src="<?= $bootstrap_js; ?>"></script>
-    <script src="contato.js"></script>
+    <script src="enviaEmail.js"></script>
 </body>
 </html>
