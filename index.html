@@ -10,29 +10,12 @@
     <link rel="stylesheet" href="<?= $icones; ?>" />
 </head>
 <body background="<?= $background; ?>">
-    <!-- CABEÇALHO (ISOLADO EM PHP) -->
     <?php
-        include_once($cb_nav);
-    ?>
-
-    <!-- CAROUSEL (ISOLADO EM PHP) -->
-    <?php
-        include_once("carousel.html");
-    ?>
-
-    <!-- THUMBS (ISOLADO EM PHP) -->
-    <?php
-        include_once("thumbs.html");
-    ?>
-
-    <!-- MODAL (ISOLADO EM PHP) -->
-    <?php
-        include_once("modal.html");
-    ?>
-
-    <!-- RODAPÉ (ISOLADO EM PHP) -->
-    <?php
-        include_once($ft_nav);
+        include_once($cb_nav); // NavBar do Cabecalho (arquivo isolado);
+        include_once("carousel.html"); // Carousel (arquivo isolado);
+        include_once("thumbs.html"); // Thumbnails (arquivo isolado);
+        include_once("modal.html"); // Modal (arquivo isolado);
+        include_once($ft_nav); // NavBar do Rodape (arquivo isolado);
     ?>
 
     <script src="<?= $jquery; ?>"></script>
