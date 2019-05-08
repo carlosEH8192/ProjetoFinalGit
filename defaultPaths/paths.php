@@ -14,8 +14,8 @@
 
     $logo_adjust = ROOT_HTML."/img/logo/logo-adjust.css";
     
-    $overflow = ROOT_HTML."/defaultCss/overflow_y.css";
-    $form = ROOT_HTML."/defaultCss/form.css";
+    $overflow = ROOT_HTML."/default_css/overflow_y.css";
+    $form = ROOT_HTML."/default_css/form.css";
 
     $background = ROOT_HTML."/img/background.png";
 
