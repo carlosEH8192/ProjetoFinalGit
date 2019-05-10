@@ -13,7 +13,7 @@
     $logo_cabecalho = $img . "/logo/cb-am.png";
 
     // CAMINHO PARA INCLUDE
-    $login_nav_ovrd = $default_navbars . "loginNavOvrd/";
+    $navbar_de_login_sobreposicao = $default_navbars . "navbar_de_login_sobreposicao/";
 
     $ss_ativa = session_status() == PHP_SESSION_ACTIVE;
     $ss_nenhuma = session_status() == PHP_SESSION_NONE;
@@ -29,7 +29,7 @@
     $validacao_existe_eh_aluno =  isset($_SESSION["validacao"]) && $_SESSION["validacao"] == "aluno";        
     if($validacao_existe_eh_aluno) {
         // Caminho completo do arquivo HTML (começa com "C:/htodcs/ProjetoFinalGit/") contendo a Navbar de Aluno/Usuário logado (usado para fazer INCLUDE);
-        $logged_in_nav = $login_nav_ovrd . "logged_in_nav.html";
+        $navbar_logado = $navbar_de_login_sobreposicao . "navbar_do_cabecalho_logado.html";
         
         // Caminho do arquivo PHP (começa com "/ProjetoFinalGit/") que faz Logout do Sistema (utilizado em um <a>);
         $logout = $pasta_raiz . "logout/index.php";
@@ -38,7 +38,7 @@
         $primeiro_nome = $primeiro_nome[0];
     } else {
         // Caminho completo do arquivo HTML contendo a Navbar de Aluno/Usuário deslogado (usado para fazer INCLUDE);
-        $def_login_nav = $login_nav_ovrd . "def_login_nav.html";
+        $navbar_do_cabecalho_deslogado = $navbar_de_login_sobreposicao . "navbar_do_cabecalho_deslogado.html";
         
         // Caminho do arquivo PHP (começa com "/ProjetoFinalGit/") que faz Login no Sistema (utilizado em um <a>);
         $login = $pasta_raiz . "login/index.php";

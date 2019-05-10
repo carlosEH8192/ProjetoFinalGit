@@ -17,11 +17,11 @@
     $form = $default_css . "form.css";
 
     $default_navbars = $caminho_completo_pasta_raiz . "defaultNavs/";
-    $cb_nav = $default_navbars . "cb_nav.php";
-    $ft_nav = $default_navbars . "ft_nav.php";
+    $navbar_do_cabecalho = $default_navbars . "navbar_do_cabecalho.php";
+    $navbar_do_rodape = $default_navbars . "navbar_do_rodape.php";
 
-    $adm_cb_nav = $default_navbars . "adm_cb_nav.php";
-    $prof_cb_nav = $default_navbars . "prof_cb_nav.php";
+    $navbar_do_cabecalho_adm = $default_navbars . "navbar_do_cabecalho_adm.php";
+    $navbar_do_cabecalho_prof = $default_navbars . "navbar_do_cabecalho_prof.php";
 
     $jquery = $pasta_raiz . "jquery.min.js";
     $colors = $pasta_raiz . "colors/colors.css";
