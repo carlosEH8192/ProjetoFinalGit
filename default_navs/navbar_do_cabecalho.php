@@ -29,7 +29,7 @@
     $validacao_existe_eh_aluno =  isset($_SESSION["validacao"]) && $_SESSION["validacao"] == "aluno";        
     if($validacao_existe_eh_aluno) {
         // Caminho completo do arquivo HTML (começa com "C:/htodcs/ProjetoFinalGit/") contendo a Navbar de Aluno/Usuário logado (usado para fazer INCLUDE);
-        $navbar_logado = $navbar_de_login_sobreposicao . "navbar_do_cabecalho_logado.html";
+        $navbar_do_cabecalho_logado = $navbar_de_login_sobreposicao . "navbar_do_cabecalho_logado.html";
         
         // Caminho do arquivo PHP (começa com "/ProjetoFinalGit/") que faz Logout do Sistema (utilizado em um <a>);
         $logout = $pasta_raiz . "logout/index.php";
@@ -52,5 +52,5 @@
         }
     }
 
-    include_once("cb_nav.html");
+    include_once("navbar_do_cabecalho.html");
 ?>
