@@ -1,9 +1,9 @@
 <?php
-    $fb = "https://goo.gl/8oRwCV";
-    $twt = "https://goo.gl/V78nNd";
-    $lkdin = "https://goo.gl/YCeuaH";
-    $ytb = "https://goo.gl/1HDioJ";
+    $facebook = "https://goo.gl/8oRwCV";
+    $twitter = "https://goo.gl/V78nNd";
+    $linkedin = "https://goo.gl/YCeuaH";
+    $youtube = "https://goo.gl/1HDioJ";
     $google = "https://goo.gl/Lm5oCp";
 
-    include_once("ft_nav.html");
+    include_once("navbar_do_rodape.html");
 ?>
