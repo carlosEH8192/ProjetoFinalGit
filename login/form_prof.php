@@ -1,19 +1,11 @@
 <?php
-    include_once("defaultPaths/paths.php");
-
-    session_id("profLogin");
+    include_once("../default_paths.php");
     session_start();
 
-    $validacao_existe_eh_prof_login =
-        isset($_SESSION["validacao"]) &&
-        $_SESSION["validacao"] == "profLogin";
-
-    if($validacao_existe_eh_prof_login)
-        include_once("./form_prof.html");
-
+    if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION["descricao"]) && $_SESSION["descricao"] == "profLogin")
+        include_once("form_prof.html");
     else {
         print("<h1>ACESSO NEGADO!</h1>");
-        session_unset();
         session_destroy();
     }
 ?>

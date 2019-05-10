@@ -1,19 +1,11 @@
 <?php
-    include_once("defaultPaths/paths.php");
-
-    session_id("admLogin");
+    include_once("../default_paths.php");
     session_start();
 
-    $validacao_existe_eh_adm_login =
-        isset($_SESSION["validacao"]) &&
-        $_SESSION["validacao"] == "admLogin";
-
-    if($validacao_existe_eh_adm_login)
-        include_once("./form_adm.html");
-
+    if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION["descricao"]) && $_SESSION["descricao"] == "admLogin")
+        include_once("form_adm.html");
     else {
-        print("<h1>ACESSO NEGADO!</h1>");
-        session_unset();
+        echo("<h1>ACESSO NEGADO!</h1>");
         session_destroy();
     }
 ?>

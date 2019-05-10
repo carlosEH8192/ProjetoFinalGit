@@ -1,5 +1,5 @@
 <?php
-    include_once("deus/Deus.php");
+    include_once("../deus/Deus.php");
     $deus = new Deus();
 
     $username = $_POST["username"];
