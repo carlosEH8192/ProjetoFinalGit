@@ -16,7 +16,7 @@
     $overflow = $default_css . "overflow_y.css";
     $form = $default_css . "form.css";
 
-    $default_navbars = $caminho_completo_pasta_raiz . "defaultNavs/";
+    $default_navbars = $caminho_completo_pasta_raiz . "default_navs/";
     $navbar_do_cabecalho = $default_navbars . "navbar_do_cabecalho.php";
     $navbar_do_rodape = $default_navbars . "navbar_do_rodape.php";
 
