@@ -26,7 +26,7 @@
         $ss_nenhuma = false;
     }
 
-    $validacao_existe_eh_aluno =  isset($_SESSION["validacao"]) && $_SESSION["validacao"] == "aluno";        
+    $validacao_existe_eh_aluno =  isset($_SESSION["validacao"]) && $_SESSION["validacao"] == "aluno";
     if($validacao_existe_eh_aluno) {
         // Caminho completo do arquivo HTML (começa com "C:/htodcs/ProjetoFinalGit/") contendo a Navbar de Aluno/Usuário logado (usado para fazer INCLUDE);
         $navbar_do_cabecalho_logado = $navbar_de_login_sobreposicao . "navbar_do_cabecalho_logado.html";

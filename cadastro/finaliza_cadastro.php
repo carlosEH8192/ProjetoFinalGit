@@ -1,5 +1,5 @@
 <?php
-    include_once("deus/Deus.php");
+    include_once("../deus/Deus.php");
     $deus = new Deus();
 
     $nome_completo = $_POST["nome-completo"];
@@ -11,10 +11,5 @@
     $email = $_POST["email"];
     $senha = $_POST["senha"];
 
-    $deus->finaliza_cadastro(
-        $nome_completo, $sexo,
-        $celular, $fixo,
-        $rg, $cpf,
-        $email, $senha
-    );
+    $deus->finaliza_cadastro($nome_completo, $sexo, $celular, $fixo, $rg, $cpf, $email, $senha);
 ?>

@@ -12,9 +12,7 @@
     <link rel="stylesheet" href="<?= $form; ?>" />
 </head>
 <body background="<?= $background; ?>">
-    <?php
-        include_once($cb_nav);
-    ?>
+    <?php include_once($navbar_do_cabecalho); // Caminho para um arquivo PHP isolado; ?>
 
     <div class="container-fluid">
         <h1 class="col-sm-12">Login</h1>
@@ -53,9 +51,7 @@
         </form>
     </div>
 
-    <?php
-        include_once($ft_nav);
-    ?>
+    <?php include_once($navbar_do_rodape); // Caminho para um arquivo PHP isolado. ?>
 
     <script src="<?= $jquery; ?>"></script>
     <script src="<?= $bootstrap_js; ?>"></script>
