@@ -1,6 +1,4 @@
-<?php // => /professores/presencas/update_presenca_script.php
-    set_include_path("C:/htdocs");
-    
+<?php
     include_once("ProjetoFinalGit/deus/Deus.php");
     $deus = new Deus();
 

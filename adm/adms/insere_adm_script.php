@@ -1,6 +1,4 @@
-<?php // => /adm/adms/insere_adm_script.php
-	set_include_path("C:/htdocs");
-    
+<?php
     include_once("ProjetoFinalGit/deus/Deus.php");    
     $deus = new Deus();
 

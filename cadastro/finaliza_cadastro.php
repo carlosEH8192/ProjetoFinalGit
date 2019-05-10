@@ -1,6 +1,4 @@
-<?php // => /cadastro/finaliza_cadastro.php
-    set_include_path($_SERVER["DOCUMENT_ROOT"]."/ProjetoFinalGit/");
-
+<?php
     include_once("deus/Deus.php");
     $deus = new Deus();
 

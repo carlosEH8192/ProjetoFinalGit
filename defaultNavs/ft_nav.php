@@ -1,4 +1,4 @@
-<?php // => /defaultNavs/ft_nav.php
+<?php
     $fb = "https://goo.gl/8oRwCV";
     $twt = "https://goo.gl/V78nNd";
     $lkdin = "https://goo.gl/YCeuaH";

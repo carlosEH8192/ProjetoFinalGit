@@ -1,5 +1,4 @@
-<?php // => /deus/Deus.php
-
+<?php
 class Deus {
     // TODOS
     public function logout() {

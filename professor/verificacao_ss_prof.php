@@ -1,4 +1,4 @@
-<?php // => /professor/verificacao_ss_adm.php 
+<?php
     function verifica_ss_inclui_html($caminho) {
         session_id("prof");
         session_start();

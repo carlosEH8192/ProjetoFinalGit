@@ -1,6 +1,4 @@
-<?php // => /adm/nomesTurma/get_nome_nomes_turma.php
-    set_include_path("C:/htdocs");
-    
+<?php
     include_once("ProjetoFinalGit/deus/Deus.php");
     $deus = new Deus();
 

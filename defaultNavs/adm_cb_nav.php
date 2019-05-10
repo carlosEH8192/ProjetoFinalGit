@@ -1,4 +1,4 @@
-<?php // => /adm/adm_cb_nav.php
+<?php
     const ROOT = "/ProjetoFinalGit";
     const CB_LOGO = ROOT."/img/logo/cb-am.png";
     const LOGOUT = ROOT."/logout/index.php";

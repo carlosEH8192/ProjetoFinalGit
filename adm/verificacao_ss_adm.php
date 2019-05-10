@@ -1,4 +1,4 @@
-<?php // => /adm/verificacao_ss_adm.php 
+<?php
     function verifica_ss_inclui_html($caminho) {
         session_id("adm");
         session_start();
@@ -16,7 +16,6 @@
             set_include_path("C:/htdocs/");
 
             include_once($caminho);
-
         } else {
             session_unset();
             session_destroy();

@@ -1,4 +1,4 @@
-<?php // => /login/index.php
+<?php
     $type_adm_existe_eh_valido = 
         isset($_GET["type"]) && $_GET["type"] == 1413;
 

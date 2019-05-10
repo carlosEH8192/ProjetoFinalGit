@@ -1,5 +1,4 @@
-<?php // => /login/form_adm.php
-    set_include_path($_SERVER["DOCUMENT_ROOT"]."/ProjetoFinalGit/");
+<?php
     include_once("defaultPaths/paths.php");
 
     session_id("admLogin");

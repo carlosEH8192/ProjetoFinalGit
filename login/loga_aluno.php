@@ -1,4 +1,4 @@
-<?php // => /login/loga.php    
+<?php
     include_once("../deus/Deus.php");
     $deus = new Deus();
 

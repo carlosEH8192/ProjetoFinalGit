@@ -1,5 +1,4 @@
-<?php // => /adm/professores/delete_prof.php
-    set_include_path("C:/htdocs");
+<?php
     include_once("ProjetoFinalGit/deus/Deus.php");
 
     $deus = new Deus();

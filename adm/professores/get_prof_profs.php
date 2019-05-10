@@ -1,6 +1,4 @@
-<?php // => /adm/professores/get_prof_profs.php
-    set_include_path("C:/htdocs");
-    
+<?php
     include_once("ProjetoFinalGit/deus/Deus.php");
     $deus = new Deus();
 
