@@ -1,6 +1,12 @@
 <?php
 class Deus {
     // TODOS
+    private $obj_mysqli = null;
+
+    public function conecta() {
+        $this->obj_mysqli = new mysqli("localhost", "root", null, "alcidesmaya_tech");
+    }
+
     public function logout() {
         session_start();
         session_unset();
@@ -8,8 +14,6 @@ class Deus {
 
         header("Location: ../index.php");
     }
-    // ==================
-
 
     // ALUNO
     public function cpf_eh_valido($cpf) {
@@ -326,35 +330,26 @@ class Deus {
     // ADM
     #### Funções relativas aos Administradores
     public function loga_adm($username, $senha) {
-        include("snippet/conecta.php");
+        $this->obj_mysqli = conecta();
+        $resultado = $this->obj_mysqli->query("SELECT username FROM adm WHERE username = '${username}' AND senha = '${senha}'")
+            or die("Erro ao fazer Login do Administrador");
 
-        $query = "SELECT username FROM adm
-                  WHERE username = '${username}' AND
-                        senha = '${senha}'";
-
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        if(!is_null($array)) {
-            session_id("admLogin");
-            session_start();
-            
-            session_unset();
+        $sessao_adm_foi_iniciada = false;        
+        $array = mysqli_fetch_assoc($resultado);
+        
+        if (!is_null($array)) {
             session_destroy();
 
             session_id("adm");
             session_start();
-
-            $_SESSION["validacao"] = "adm";
+            $_SESSION["descricao"] = "adm";
             $_SESSION["username"] = $array["username"];
 
-            session_write_close();
-            header("Location: ../adm/index.php");
-
-        } else            
-            print("<h1>ERRO AO FAZER LOGIN!</h1>");
+            $sessao_adm_foi_iniciada = true;
+        }
 
         mysqli_close($conexao);
+        return $sessao_adm_foi_iniciada;
     }
 
     public function recupera_adm($codigo) {
