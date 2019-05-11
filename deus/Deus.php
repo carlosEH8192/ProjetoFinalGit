@@ -4,324 +4,230 @@ class Deus {
     private $obj_mysqli = null;
 
     public function conecta() {
-        $this->obj_mysqli = new mysqli("localhost", "root", null, "alcidesmaya_tech");
+        $this->obj_mysqli = new mysqli("localhost", "root", "", "alcidesmaya_tech");
     }
+
+    public function consulta($query, $mensagem_or_die) {
+        return $this->obj_mysqli->query($query) or die($mensagem_or_die);
+    }
+
+    public function desconecta() { $this->obj_mysqli->close(); }
 
     public function logout() {
         session_start();
-        session_unset();
         session_destroy();
-
         header("Location: ../index.php");
     }
 
     // ALUNO
     public function cpf_eh_valido($cpf) {
-        include("snippet/conecta.php");
+        $this->conecta();        
+        $query = "SELECT 1 FROM aluno WHERE cpf = '${cpf}' LIMIT 1";
+        $resultado = $this->consulta($query, "Erro ao Verificar se o CPF é Válido!");
 
-        $query = "SELECT 1 FROM aluno
-                    WHERE cpf = '$cpf'
-                    LIMIT 1";
-
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
-        return !is_null($array);
+        $this->desconecta();
+        return mysqli_num_rows($resultado) > 0;
     }
 
     public function get_dados_aluno($cpf) {
-        include("snippet/conecta.php");
-
-        $query = "SELECT * FROM aluno
-                  WHERE cpf = '$cpf'";
-
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->conecta();
+        $query = "SELECT * FROM aluno WHERE cpf = '$cpf'";        
+        $resultado = $this->consulta($query, "Erro ao Buscar Dados do Aluno!");
+        
+        $array = mysqli_fetch_assoc($resultado);
+        $this->desconecta();
         return $array;
     }
 
-    public function finaliza_cadastro($nome_completo, $sexo,
-                                      $celular, $fixo,
-                                      $rg, $cpf,
-                                      $email, $senha
-                                     )
-    {
-        include("snippet/conecta.php");
+    public function finaliza_cadastro($nome_completo, $sexo, $celular, $fixo, $rg, $cpf, $email, $senha) {
+        $this->conecta();
 
-        $query = "UPDATE aluno SET
-                  nomeCompleto = '${nome_completo}',
-                  sexo = '${sexo}',
-                  telefoneCelular = '${celular}',
-                  telefoneFixo = '${fixo}',
-                  rg = '${rg}',
-                  email = '${email}',
-                  senha = '${senha}'
-                  WHERE cpf = '${cpf}'";
+        $query = "UPDATE aluno SET nome_completo = '${nome_completo}', sexo = '${sexo}', telefone_celular = '${celular}', telefone_fixo = '${fixo}', rg = '${rg}', " .
+            "email = '${email}', senha = '${senha}' " .
+            "WHERE cpf = '${cpf}'";
+        $resultado = $this->consulta($query, "Erro ao Finalizar Cadastro!");
 
-        include("snippet/resultado.php");
-
-        if($resultado)
-            print("<h1>CONTA ATUALIZADA COM SUCESSO!</h1>");
-
-        else
-            print("<h1>ERRO AO ATUALIZAR CONTA</h1>.");
-
-        mysqli_close($conexao);
+        $this->desconecta();
+        return $resultado;
     }
 
     public function loga_aluno($email, $senha) {
-        include("snippet/conecta.php");
+        $this->conecta();
 
-        $query = "SELECT * FROM aluno
-                  WHERE email = '${email}' AND
-                        senha = '${senha}'";
-
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
+        $query = "SELECT * FROM aluno WHERE email = '${email}' AND senha = '${senha}'";
+        $resultado = $this->consulta($query, "Erro ao Logar Aluno!");
+        $array = mysqli_fetch_assoc($resultado);
 
         if(!is_null($array)) {
             session_id("aluno");
             session_start();
-
-            $_SESSION["validacao"] = "aluno";
-            
-            $_SESSION["nome_completo"] = $array["nomeCompleto"];
+            $_SESSION["descricao"] = "aluno";
+            $_SESSION["nome_completo"] = $array["nome_completo"];
             $_SESSION["sexo"] = $array["sexo"];
-
-            $_SESSION["celular"] = $array["telefoneCelular"];
-            $_SESSION["fixo"] = $array["telefoneFixo"];
-
+            $_SESSION["celular"] = $array["telefone_celular"];
+            $_SESSION["fixo"] = $array["telefone_fixo"];
             $_SESSION["rg"] = $array["rg"];
             $_SESSION["cpf"] = $array["cpf"];
-
             $_SESSION["email"] = $array["email"];
             $_SESSION["senha"] = $array["senha"];
-
             session_write_close();
-            header("Location: ../index.php");
+        }
 
-        } else 
-            print("<h1>ERRO AO FAZER LOGIN!</h1>");
-
-        mysqli_close($conexao);
+        $this->desconecta();
+        return !is_null($array);
     }
     // ==================
 
 
     // PROFESSORES
     public function loga_prof($email, $senha) {
-        include("snippet/conecta.php");
+        $this->conecta();
 
-        $query = "SELECT * FROM professor
-                  WHERE email = '${email}' AND
-                        senha = '${senha}'";
-
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
+        $query = "SELECT * FROM professor WHERE email = '${email}' AND senha = '${senha}'";
+        $resultado = $this->consulta($query, "Erro ao Logar Professor!");
+        $array = mysqli_fetch_assoc($resultado);
 
         if(!is_null($array)) {
-            session_id("profLogin");
             session_start();
-            
-            session_unset();
             session_destroy();
 
             session_id("prof");
             session_start();
-
             $_SESSION["validacao"] = "prof";
-
-            $_SESSION["nome_completo"] = $array["nomeCompleto"];
+            $_SESSION["nome_completo"] = $array["nome_completo"];
             $_SESSION["sexo"] = $array["sexo"];
-
             $_SESSION["rg"] = $array["rg"];
             $_SESSION["cpf"] = $array["cpf"];
             $_SESSION["disciplina"] = $array["disciplina"];
-
             $_SESSION["email"] = $array["email"];
             $_SESSION["senha"] = $array["senha"];
-
             session_write_close();
-            header("Location: ../professor/index.php");
+        }
 
-        } else 
-            print("<h1>ERRO AO FAZER LOGIN!</h1>");
-
-        mysqli_close($conexao);
+        $this->desconecta();
+        return !is_null($array);
     }
 
     #### Funções relativas às Notas
     public function recupera_nota($codigo) {
-        include("snippet/conecta.php");
+        $this->conecta();
         $query = "SELECT * FROM nota WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Buscar Nota!");
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
-        return $array;
+        $this->desconecta();
+        return mysqli_fetch_assoc($resultado);
     }
 
     public function recupera_notas($filtro) {
-        include("snippet/conecta.php");
-        $query =
-            "SELECT n.codigo,
-                    n.atividadeNome,
-                    n.nota,
-                    a.nomeCompleto AS alunoNome,
-                    nT.nome AS nomeTurma
-            FROM nota as n
+        $this->conecta();
 
-            INNER JOIN aluno AS a
-            ON n.codAluno = a.codigo
+        $query = "SELECT n.codigo, n.atividade_nome, n.nota, a.nome_completo AS aluno_nome, n_turma.nome AS nome_turma " .
+            "FROM nota as n " .
+            "INNER JOIN aluno AS a ON n.cod_aluno = a.codigo " .
+            "INNER JOIN nome_turma AS n_turma ON n.cod_nome_turma = nT.codigo";
+        $query .= !is_null($filtro) ? " WHERE n.atividade_nome LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Notas!");
 
-            INNER JOIN nome_turma AS nT
-            ON n.codNomeTurma = nT.codigo";
-
-        if(!is_null($filtro))
-            $query .= " WHERE n.atividadeNome LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
-    public function update_nota($codigo, $atividade_nome,
-                                $nota, $cod_aluno,
-                                $cod_nome_turma)
-    {
-        include("snippet/conecta.php");
+    public function update_nota($codigo, $atividade_nome, $nota, $cod_aluno, $cod_nome_turma) {
+        $this->conecta();
+        
         $query = "UPDATE nota SET
-                      atividadeNome = '${atividade_nome}',
+                      atividade_nome = '${atividade_nome}',
                       nota = ${nota},
-                      codAluno = ${cod_aluno},
-                      codNomeTurma = ${cod_nome_turma}
+                      cod_aluno = ${cod_aluno},
+                      cod_nome_turma = ${cod_nome_turma}
                   WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Nota!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
-    public function insere_nota($atividade_nome, $nota,
-                                $cod_aluno, $cod_nome_turma
-                               )
-    {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO nota (
-            atividadeNome, nota,
-            codAluno, codNomeTurma
+    public function insere_nota($atividade_nome, $nota, $cod_aluno, $cod_nome_turma) {
+        $this->conecta();
 
-        ) VALUES (
-            '${atividade_nome}', ${nota},
-            ${cod_aluno}, ${cod_nome_turma}
-        )";
+        $query = "INSERT INTO nota(atividade_nome, nota, cod_aluno, cod_nome_turma) VALUES('${atividade_nome}', ${nota}, ${cod_aluno}, ${cod_nome_turma})";
+        $resultado = $this->consulta($query, "Erro ao Inserir Nota!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_nota($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM nota WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM nota WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Nota!");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas às Presenças
     public function recupera_presenca($codigo) {
-        include("snippet/conecta.php");
+        $this->conecta();
+        
         $query = "SELECT * FROM presenca WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Presença!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_presencas($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
         
-        $query =
-            "SELECT p.codigo,
-                    p.dia,
-                    a.nomeCompleto AS alunoNome,
-                    nT.nome AS nomeTurma
-            FROM presenca as p
-
-            INNER JOIN aluno AS a
-            ON p.codAluno = a.codigo
-
-            INNER JOIN nome_turma AS nT
-            ON p.codNomeTurma = nT.codigo";
-
-        if(!is_null($filtro))
-            $query .= " WHERE a.nomeCompleto LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
+        $query = "SELECT p.codigo, p.dia, a.nome_completo AS aluno_nome, nT.nome AS nome_turma " .
+            "FROM presenca as p " .
+            "INNER JOIN aluno AS a ON p.cod_aluno = a.codigo " .
+            "INNER JOIN nome_turma AS n_turma ON p.cod_nome_turma = n_turma.codigo";
+        $query .= !is_null($filtro) ? " WHERE a.nome_completo LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Presenças!");
+        
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
-    public function update_presenca($codigo, $dia,
-                                    $cod_aluno, $cod_nome_turma
-                                   )
-    {
-        include("snippet/conecta.php");
-        $query = "UPDATE presenca SET
-                      dia = '${dia}',
-                      codAluno = ${cod_aluno},
-                      codNomeTurma = ${cod_nome_turma}
-                  WHERE codigo = ${codigo}";
+    public function update_presenca($codigo, $dia, $cod_aluno, $cod_nome_turma) {
+        $this->conecta();
+        
+        $query = "UPDATE presenca SET dia = '${dia}', cod_aluno = ${cod_aluno}, cod_nome_turma = ${cod_nome_turma} WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Presença!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
-    public function insere_presenca($dia, $cod_aluno, $cod_nome_turma)
-    {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO presenca (
-            dia, codAluno, codNomeTurma
-        ) VALUES (
-            '${dia}', ${cod_aluno}, ${cod_nome_turma}
-        )";
+    public function insere_presenca($dia, $cod_aluno, $cod_nome_turma) {
+        $this->conecta();
+        
+        $query = "INSERT INTO presenca(dia, cod_aluno, cod_nome_turma) VALUES('${dia}', ${cod_aluno}, ${cod_nome_turma})";
+        $resultado = $this->consulta($query, "Erro ao Inserir Presença!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_presenca($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM presenca WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM presenca WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Presença!");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
     // ==================
@@ -330,480 +236,375 @@ class Deus {
     // ADM
     #### Funções relativas aos Administradores
     public function loga_adm($username, $senha) {
-        $this->obj_mysqli = conecta();
-        $resultado = $this->obj_mysqli->query("SELECT username FROM adm WHERE username = '${username}' AND senha = '${senha}'")
-            or die("Erro ao fazer Login do Administrador");
+        $this->conecta();
 
-        $sessao_adm_foi_iniciada = false;        
+        $query = "SELECT username FROM adm WHERE username = '${username}' AND senha = '${senha}'";        
+        $resultado = $this->consulta($query, "Erro ao fazer Login do Administrador!");        
         $array = mysqli_fetch_assoc($resultado);
-        
+
         if (!is_null($array)) {
+            session_start();
             session_destroy();
 
             session_id("adm");
             session_start();
             $_SESSION["descricao"] = "adm";
             $_SESSION["username"] = $array["username"];
-
-            $sessao_adm_foi_iniciada = true;
+            session_write_close();
         }
 
-        mysqli_close($conexao);
-        return $sessao_adm_foi_iniciada;
+        $this->desconecta();
+        return !is_null($array);
     }
 
     public function recupera_adm($codigo) {
-        include("snippet/conecta.php");
+        $this->conecta();
+        
         $query = "SELECT * FROM adm WHERE codigo = ${codigo}";
+        $resultado =$this->consulta($query, "Erro ao Buscar Administradores!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_adms($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
+        
         $query = "SELECT * FROM adm";
-
-        if(!is_null($filtro))
-            $query .= " WHERE username LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
+        $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Administradores!");
+        
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
     public function update_adm($codigo, $username, $senha) {
-        include("snippet/conecta.php");
-        $query = "UPDATE adm SET
-                  username = '${username}',
-                  senha = '${senha}'
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
 
-        include("snippet/resultado.php");
+        $query = "UPDATE adm SET username = '${username}', senha = '${senha}' WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Administrador!");
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function insere_adm($username, $senha) {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO adm(username, senha)
-                  VALUES('${username}', '${senha}')";
+        $this->conecta();
 
-        include("snippet/resultado.php");
+        $query = "INSERT INTO adm(username, senha) VALUES('${username}', '${senha}')";
+        $resultado = $this->consulta($query, "Erro ao Inserir Administrador!");
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_adm($codigo){
-        include("snippet/conecta.php");
-        $query = "DELETE FROM adm WHERE codigo = ${codigo};";
+        $this->conecta();
+
+        $query = "DELETE FROM adm WHERE codigo = ${codigo};";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Administrador!");
         
-        include("snippet/resultado.php");
-        
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas aos Alunos
     public function recupera_aluno($codigo) {
-        include("snippet/conecta.php");
-        $query = "SELECT * FROM aluno
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
+        
+        $query = "SELECT * FROM aluno WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Aluno!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_alunos($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
+
         $query = "SELECT * FROM aluno";
+        $query .= !is_null($filtro) ? " WHERE nome_completo LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Alunos!");
 
-        if(!is_null($filtro))
-            $query .= " WHERE nomeCompleto LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
-    public function update_aluno($codigo, $nome_completo, $sexo,
-                                 $celular, $fixo, $rg,
-                                 $cpf, $email, $senha)
-    {
-        include("snippet/conecta.php");
-        $query = "UPDATE aluno SET
-                  nomeCompleto = '${nome_completo}',
-                  sexo = '${sexo}',
-                  telefoneCelular = '${celular}',
-                  telefoneFixo = '${fixo}',
-                  rg = '${rg}',
-                  cpf = '${cpf}',
-                  email = '${email}',
-                  senha = '${senha}'
-                  WHERE codigo = ${codigo}";
+    public function update_aluno($codigo, $nome_completo, $sexo, $celular, $fixo, $rg, $cpf, $email, $senha) {
+        $this->conecta();
+        
+        $query = "UPDATE aluno SET nome_completo = '${nome_completo}', sexo = '${sexo}', telefone_celular = '${celular}', telefone_fixo = '${fixo}', rg = '${rg}', " .
+            "cpf = '${cpf}', email = '${email}', senha = '${senha}' " .
+            "WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Aluno!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
-    public function insere_aluno($nome_completo, $sexo,
-                                 $celular, $fixo,
-                                 $rg, $cpf,
-                                 $email, $senha)
-    {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO aluno (
-            nomeCompleto, sexo,
-            telefoneCelular, telefoneFixo,
-            rg, cpf,
-            email, senha
+    public function insere_aluno($nome_completo, $sexo, $celular, $fixo, $rg, $cpf, $email, $senha) {
+        $this->conecta();
+        
+        $query = "INSERT INTO aluno(nome_completo, sexo, telefone_celular, telefone_fixo, rg, cpf, email, senha) " .
+            "VALUES('${nome_completo}', '${sexo}', '${celular}', '${fixo}', '${rg}', '${cpf}', '${email}', '${senha}')";
+        $resultado = $this->consulta($query, "Erro ao Inserir Aluno!");
 
-        ) VALUES (
-            '${nome_completo}', '${sexo}',
-            '${celular}', '${fixo}',
-            '${rg}', '${cpf}',
-            '${email}', '${senha}'
-        )";
-
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_aluno($codigo) {
-        include("snippet/conecta.php");
+        $this->conecta();
+
         $query = "DELETE FROM aluno WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Deletar Aluno!");
         
-        include("snippet/resultado.php");
-        
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas aos Cursos
     public function recupera_curso($codigo) {
-        include("snippet/conecta.php");
-        $query = "SELECT * FROM curso
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
+        
+        $query = "SELECT * FROM curso WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Curso!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_cursos($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
+        
         $query = "SELECT * FROM curso";
+        $query .= !is_null($filtro) ? " WHERE nome LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Cursos!");
 
-        if(!is_null($filtro))
-            $query .= " WHERE nome LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
     public function update_curso($codigo, $nome, $carga_horaria) {
-        include("snippet/conecta.php");
-        $query = "UPDATE curso SET
-                  nome = '${nome}',
-                  cargaHoraria = ${carga_horaria}
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
+        
+        $query = "UPDATE curso SET nome = '${nome}', cargaHoraria = ${carga_horaria} WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Curso!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function insere_curso($nome, $carga_horaria) {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO curso(nome, cargaHoraria)
-                  VALUES('${nome}', ${carga_horaria})";
+        $this->conecta();
 
-        include("snippet/resultado.php");
+        $query = "INSERT INTO curso(nome, cargaHoraria) VALUES('${nome}', ${carga_horaria})";
+        $resultado = $this->consulta($query, "Erro ao Inserir Curso!");
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_curso($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM curso WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM curso WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Curso!");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas aos Professores
     public function recupera_prof($codigo) {
-        include("snippet/conecta.php");
-        $query = "SELECT * FROM professor
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
+        
+        $query = "SELECT * FROM professor WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Professor!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_profs($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
+
         $query = "SELECT * FROM professor";
+        $query .= !is_null($filtro) ? " WHERE nome_completo LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Professores!");
 
-        if(!is_null($filtro))
-            $query .= " WHERE nomeCompleto LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
-    public function update_prof($codigo, $nome_completo,
-                                $sexo, $rg,
-                                $cpf, $disciplina)
-    {
-        include("snippet/conecta.php");
-        $query = "UPDATE professor SET
-                  nomeCompleto = '${nome_completo}',
-                  sexo = '${sexo}',
-                  rg = '${rg}',
-                  cpf = '${cpf}',
-                  disciplina = '${disciplina}'
-                  WHERE codigo = ${codigo}";
+    public function update_prof($codigo, $nome_completo, $sexo, $rg, $cpf, $disciplina) {
+        $this->conecta();
+        
+        $query = "UPDATE professor SET nome_completo = '${nome_completo}', sexo = '${sexo}', rg = '${rg}', cpf = '${cpf}', disciplina = '${disciplina}' " .
+            "WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Professor!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
-    public function insere_prof($nome_completo, $sexo,
-                                $rg, $cpf, $disciplina
-                               )
-    {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO professor(
-            nomeCompleto, sexo,
-            rg, cpf,
-            disciplina
+    public function insere_prof($nome_completo, $sexo, $rg, $cpf, $disciplina) {
+        $this->conecta();
 
-        ) VALUES (
-            '${nome_completo}', '${sexo}',
-            '${rg}', '${cpf}',
-            '${disciplina}'
-        )";
+        $query = "INSERT INTO professor(nome_completo, sexo, rg, cpf, disciplina) VALUES('${nome_completo}', '${sexo}', '${rg}', '${cpf}', '${disciplina}')";
+        $resultado = $this->consulta($query, "Erro ao Inserir Professor!");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_prof($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM professor WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM professor WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Professor");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas aos Nomes de Turma
     public function recupera_nome_turma($codigo) {
-        include("snippet/conecta.php");
-        $query = "SELECT * FROM nome_turma
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
+        
+        $query = "SELECT * FROM nome_turma WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Nome de Turma!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_nomes_turma($filtro) {
-        include("snippet/conecta.php");
+        $this->conecta();
+
         $query = "SELECT * FROM nome_turma";
+        $query .= !is_null($filtro) ? " WHERE nome LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Nomes de Turmas!");
 
-        if(!is_null($filtro))
-            $query .= " WHERE nome LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
     public function update_nome_turma($codigo, $nome) {
-        include("snippet/conecta.php");
-        $query = "UPDATE nome_turma SET
-                  nome = '${nome}'
-                  WHERE codigo = ${codigo}";
+        $this->conecta();
 
-        include("snippet/resultado.php");
+        $query = "UPDATE nome_turma SET nome = '${nome}' WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Nome de Turma!");
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function insere_nome_turma($nome) {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO nome_turma(nome)
-                  VALUES('${nome}')";
+        $this->conecta();
 
-        include("snippet/resultado.php");
+        $query = "INSERT INTO nome_turma(nome) VALUES('${nome}')";
+        $resultado = $this->consulta($query, "Erro ao Inserir Nome de Turma!");
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_nome_turma($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM nome_turma WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM nome_turma WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Nome de Turma!");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     #### Funções relativas às Turmas
     public function recupera_turma($codigo) {
-        include("snippet/conecta.php");        
+        $this->conecta();
+
         $query = "SELECT * FROM turma WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Recuperar Turma!");
+        $array = mysqli_fetch_assoc($resultado);
 
-        include("snippet/resultado.php");
-        include("snippet/array_fetch_assoc.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $array;
     }
 
     public function recupera_turmas($filtro) {
-        include("snippet/conecta.php");
-        $query =
-            "SELECT t.codigo AS turmaCodigo,
-                    nT.nome AS nomeTurma,
-                    a.nomeCompleto AS alunoNome,
-                    p.nomeCompleto AS professorNome,
-                    c.nome AS cursoNome
-            FROM turma AS t
+        $this->conecta();
+        $query = "SELECT t.codigo AS turma_codigo, nT.nome AS nome_turma, a.nome_completo AS aluno_nome, p.nome_completo AS professor_nome, c.nome AS curso_nome " .
+            "FROM turma AS t " .
+            "INNER JOIN nome_turma AS n_turma ON t.cod_nome_turma = n_turma.codigo " .
+            "INNER JOIN aluno AS a ON t.cod_aluno = a.codigo " .
+            "INNER JOIN professor AS p ON t.cod_professor = p.codigo " .
+            "INNER JOIN curso AS c ON t.cod_curso = c.codigo";
+        $query .= !is_null($filtro) ? " WHERE a.nome_completo LIKE '%${filtro}%'" : null;
+        $resultado = $this->consulta($query, "Erro ao Recuperar Turmas!");
 
-            INNER JOIN nome_turma AS nT
-            ON t.codNomeTurma = nT.codigo
-
-            INNER JOIN aluno AS a
-            ON t.codAluno = a.codigo
-
-            INNER JOIN professor AS p
-            ON t.codProfessor = p.codigo
-
-            INNER JOIN curso AS c
-            ON t.codCurso = c.codigo";
-
-        if(!is_null($filtro))
-            $query .= " WHERE a.nomeCompleto LIKE '%${filtro}%'";
-
-        include("snippet/resultado.php");
         $dados = array();
-
         while($dados_linha = mysqli_fetch_assoc($resultado))
             array_push($dados, $dados_linha);
 
-        mysqli_close($conexao);
+        $this->desconecta();
         return $dados;
     }
 
-    public function update_turma($codigo, $cod_nome_turma,
-                                 $cod_aluno, $cod_professor,
-                                 $cod_curso)
-    {
-        include("snippet/conecta.php");
-        $query = "UPDATE turma SET
-                      codNomeTurma = ${cod_nome_turma},
-                      codAluno = ${cod_aluno},
-                      codProfessor = ${cod_professor},
-                      codCurso = ${cod_curso}
-                  WHERE codigo = ${codigo}";
+    public function update_turma($codigo, $cod_nome_turma, $cod_aluno, $cod_professor, $cod_curso) {
+        $this->conecta();
+        $query = "UPDATE turma SET cod_nome_turma = ${cod_nome_turma}, cod_aluno = ${cod_aluno}, cod_professor = ${cod_professor}, cod_curso = ${cod_curso} " .
+            "WHERE codigo = ${codigo}";
+        $resultado = $this->consulta($query, "Erro ao Atualizar Turma");
 
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
-    public function insere_turma($cod_nome_turma, $cod_aluno,
-                                 $cod_professor, $cod_curso
-                                 )
-    {
-        include("snippet/conecta.php");
-        $query = "INSERT INTO turma (
-            codNomeTurma, codAluno,
-            codProfessor, codCurso
+    public function insere_turma($cod_nome_turma, $cod_aluno, $cod_professor, $cod_curso) {
+        $this->conecta();
+        
+        $query = "INSERT INTO turma(cod_nome_turma, cod_aluno, cod_professor, cod_curso) VALUES(${cod_nome_turma}, ${cod_aluno}, ${cod_professor}, ${cod_curso})";
+        $resultado = $this->consulta($query, "Erro ao Inserir Turma!");
 
-        ) VALUES (
-            ${cod_nome_turma}, ${cod_aluno},
-            ${cod_professor}, ${cod_curso}
-        )";
-
-        include("snippet/resultado.php");
-
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
 
     public function delete_turma($codigo) {
-        include("snippet/conecta.php");
-        $query = "DELETE FROM turma WHERE codigo = ${codigo}";
+        $this->conecta();
         
-        include("snippet/resultado.php");
+        $query = "DELETE FROM turma WHERE codigo = ${codigo}";        
+        $resultado = $this->consulta($query, "Erro ao Deletar Turma!");
         
-        mysqli_close($conexao);
+        $this->desconecta();
         return $resultado;
     }
     // ==================
 }
-
 ?>
