@@ -1,5 +1,6 @@
 <?php
     include_once("../default_paths.php");
+    session_id("admLogin");
     session_start();
 
     if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION["descricao"]) && $_SESSION["descricao"] == "admLogin")
