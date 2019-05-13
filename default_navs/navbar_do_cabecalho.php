@@ -10,8 +10,6 @@
     $ds_max = $cursos . "/3ds_max/index.php";
     $informatica_basica = $cursos . "/informatica_basica/index.php";
 
-    $logo_cabecalho = $img . "/logo/cb-am.png";
-
     // CAMINHO PARA INCLUDE
     $navbar_de_login_sobreposicao = $default_navbars . "navbar_de_login_sobreposicao/";
 
