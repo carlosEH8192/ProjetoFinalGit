@@ -9,6 +9,7 @@
 
     $img = $pasta_raiz . "img/";
     $adjust = $img . "adjust.css";
+    $logo_cabecalho = $img . "logo/cb-am.png";
     $logo_adjust = $img . "logo/logo-adjust.css";
     $background = $img . "background.png";
 
@@ -20,10 +21,9 @@
     $navbar_do_cabecalho = $default_navbars . "navbar_do_cabecalho.php";
     $navbar_do_rodape = $default_navbars . "navbar_do_rodape.php";
 
-    $navbar_do_cabecalho_adm = $default_navbars . "navbar_do_cabecalho_adm.php";
-    $navbar_do_cabecalho_prof = $default_navbars . "navbar_do_cabecalho_prof.php";
-
     $jquery = $pasta_raiz . "jquery.min.js";
     $colors = $pasta_raiz . "colors/colors.css";
     $icones = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+    $logout = $pasta_raiz . "logout/index.php";
 ?>
