@@ -272,7 +272,7 @@ class Deus {
         $this->conecta();
         
         $query = "SELECT * FROM adm";
-        $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'";
+        $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
         $resultado = $this->consulta($query, "Erro ao Recuperar Administradores!");
         
         $dados = array();
@@ -559,7 +559,8 @@ class Deus {
 
     public function recupera_turmas($filtro) {
         $this->conecta();
-        $query = "SELECT t.codigo AS turma_codigo, nT.nome AS nome_turma, a.nome_completo AS aluno_nome, p.nome_completo AS professor_nome, c.nome AS curso_nome " .
+
+        $query = "SELECT t.codigo AS turma_codigo, n_turma.nome AS nome_turma, a.nome_completo AS aluno_nome, p.nome_completo AS professor_nome, c.nome AS curso_nome " .
             "FROM turma AS t " .
             "INNER JOIN nome_turma AS n_turma ON t.cod_nome_turma = n_turma.codigo " .
             "INNER JOIN aluno AS a ON t.cod_aluno = a.codigo " .
