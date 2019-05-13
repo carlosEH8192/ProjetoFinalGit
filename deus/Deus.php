@@ -8,10 +8,13 @@ class Deus {
     }
 
     public function consulta($query, $mensagem_or_die) {
-        return $this->obj_mysqli->query($query) or die($mensagem_or_die);
+        $resultado = $this->obj_mysqli->query($query) or die($mensagem_or_die);
+        return $resultado;
     }
 
-    public function desconecta() { $this->obj_mysqli->close(); }
+    public function desconecta() {
+        $this->obj_mysqli->close();
+    }
 
     public function logout() {
         session_start();
@@ -238,9 +241,9 @@ class Deus {
     public function loga_adm($username, $senha) {
         $this->conecta();
 
-        $query = "SELECT username FROM adm WHERE username = '${username}' AND senha = '${senha}'";        
-        $resultado = $this->consulta($query, "Erro ao fazer Login do Administrador!");        
-        $array = mysqli_fetch_assoc($resultado);
+        $query = "SELECT username FROM adm WHERE username = '${username}' AND senha = '${senha}'";
+        $resultado = $this->consulta($query, "Erro ao Fazer Login do Administrador!");
+        $array = $resultado->fetch_assoc();
 
         if (!is_null($array)) {
             session_start();
