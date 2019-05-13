@@ -8,7 +8,7 @@
     $bootstrap_js = $bootstrap . "js/bootstrap.min.js";
 
     $img = $pasta_raiz . "img/";
-    $adjust = $img . "/adjust.css";
+    $adjust = $img . "adjust.css";
     $logo_adjust = $img . "logo/logo-adjust.css";
     $background = $img . "background.png";
 
