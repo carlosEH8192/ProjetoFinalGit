@@ -4,87 +4,60 @@
     <title>Alcides Maya</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../img/adjust.css" />
-    <link rel="stylesheet" href="../../colors/colors.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="<?= $bootstrap_css; ?>" />
+    <link rel="stylesheet" href="<?= $adjust; ?>" />
+    <link rel="stylesheet" href="<?= $colors; ?>" />
+    <link rel="stylesheet" href="<?= $icones; ?>" />    
 </head>
-<body background="../../img/background.png">
-    <!-- CABEÇALHO ADM (ISOLADO EM PHP) -->
-    <?php
-        include_once($iface_cb_nav_adm);
-    ?>
+<body background="<?= $background; ?>">
+    <?php include_once($navbar_do_cabecalho_adm); // Arquivo PHP isolado. ?>
 
     <div class="container-fluid">
         <h1 class="col-md-12">Nova Turma</h1>
-
         <form class="form-horizontal" method="post" onsubmit="return insereTurma(this, event)">
             <!-- CÓDIGO DO NOME DA TURMA -->
             <div class="form-group">
-                <label for="sel-cod-nome-turma"
-                        class="col-sm-2 control-label">
-                    Código do Nome da Turma: 
-                </label>
+                <label for="sel-cod-nome-turma" class="col-sm-2 control-label">Código do Nome da Turma: </label>
                 <div class="col-sm-3">
-                    <select class="form-control" id="sel-cod-nome-turma"
-                            name="cod-nome-turma" required>
-                    </select>
+                    <select class="form-control" id="sel-cod-nome-turma"name="cod-nome-turma" required></select>
                 </div>
             </div>
 
             <!-- CÓDIGO DO ALUNO -->
             <div class="form-group">
-                <label for="sel-cod-aluno"
-                        class="col-sm-2 control-label">
-                    Código do Aluno: 
-                </label>
+                <label for="sel-cod-aluno" class="col-sm-2 control-label">Código do Aluno: </label>
                 <div class="col-sm-3">
-                    <select class="form-control" id="sel-cod-aluno"
-                            name="cod-aluno" required>
-                    </select>
+                    <select class="form-control" id="sel-cod-aluno"name="cod-aluno" required></select>
                 </div>
             </div>
 
             <!-- CÓDIGO DO PROFESSOR -->
             <div class="form-group">
-                <label for="sel-cod-professor"
-                        class="col-sm-2 control-label">
-                    Código do Professor: 
-                </label>
+                <label for="sel-cod-professor" class="col-sm-2 control-label"> Código do Professor: </label>
                 <div class="col-sm-3">
-                    <select class="form-control" id="sel-cod-professor"
-                            name="cod-professor" required>
-                    </select>
+                    <select class="form-control" id="sel-cod-professor" name="cod-professor" required></select>
                 </div>
             </div>
 
             <!-- CÓDIGO DO CURSO -->
             <div class="form-group">
-                <label for="sel-cod-curso"
-                        class="col-sm-2 control-label">
-                    Código do Curso: 
-                </label>
+                <label for="sel-cod-curso" class="col-sm-2 control-label">Código do Curso: </label>
                 <div class="col-sm-3">
-                    <select class="form-control" id="sel-cod-curso"
-                            name="cod-curso" required>
-                    </select>
+                    <select class="form-control" id="sel-cod-curso" name="cod-curso" required></select>
                 </div>
             </div>
 
             <!-- SUBMIT -->
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-3">
-                    <input type="submit" class="btn btn-default"
-                            name="submit" value="Salvar"
-                            required />
+                    <input type="submit" class="btn btn-default" name="submit" value="Salvar" required />
                 </div>
             </div>
         </form>
     </div>
 
-    <script src="../../bootstrap/jquery/jquery.min.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="<?= $jquery; ?>"></script>
+    <script src="<?= $bootstrap_js; ?>"></script>
     <script>
         var optionNomeTurma = '<option value="@cod">' +
                                   '@cod (@nome)' +

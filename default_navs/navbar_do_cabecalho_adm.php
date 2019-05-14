@@ -1,6 +1,4 @@
 <?php
-    include_once("../default_paths.php");
-
     $username = $_SESSION["username"];
     $adm = $pasta_raiz . "adm/";
     $gestao_adms = $adm . "adms/index.php";
