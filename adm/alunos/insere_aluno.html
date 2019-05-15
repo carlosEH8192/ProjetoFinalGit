@@ -4,13 +4,13 @@
     <title>Alcides Maya</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="<?= $bootstrap_css; ?>" />
-    <link rel="stylesheet" href="<?= $adjust; ?>" />
-    <link rel="stylesheet" href="<?= $colors; ?>" />
-    <link rel="stylesheet" href="<?= $icones; ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_bootstrap_css(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_adjust(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_colors(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_icones(); ?>" />
 </head>
-<body background="<?= $background; ?>">
-    <?php include_once($navbar_do_cabecalho_adm); // Arquivo PHP isolado. ?>
+<body background="<?= $paths->get_background(); ?>">
+    <?php include_once($paths->get_navbar_do_cabecalho_adm()); // Arquivo PHP isolado. ?>
 
     <div class="container-fluid">
         <h1 class="col-md-12">Novo Aluno</h1>
@@ -95,8 +95,8 @@
         </form>
     </div>
 
-    <script src="<?= $jquery; ?>"></script>
-    <script src="<?= $bootstrap_js; ?>"></script>
+    <script src="<?= $paths->get_jquery(); ?>"></script>
+    <script src="<?= $paths->get_bootstrap_js(); ?>"></script>
     <script>
         function insereAluno(form, ev) {
             ev.preventDefault();

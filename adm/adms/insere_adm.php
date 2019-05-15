@@ -5,6 +5,7 @@
 
     if ((new verificacao())->sessao()) {
         $navbar_do_cabecalho_adm = (new obtentor_de_caminhos())->navbar_do_cabecalho_adm();
+        $paths = new default_paths();
         include_once("insere_adm.html");
     } else
         echo("<h1>Acesso Negado!</h1>");
