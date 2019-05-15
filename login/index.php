@@ -12,7 +12,7 @@
         if ($_GET["login"] == "adm") {
             $_SESSION["descricao"] = "admLogin";
             session_write_close();
-            header("Location: form_adm.php");        
+            header("Location: form_adm.php");
         } else if ($_GET["login"] == "prof") {
             $_SESSION["descricao"] = "profLogin";
             session_write_close();
@@ -20,11 +20,12 @@
         }
 
         unset($_GET);
-    }    
+    }
     else if (session_status() == PHP_SESSION_ACTIVE)
         session_destroy();
     else {
         include_once("../default_paths.php");
+        $paths = new default_paths();
         include_once("index.html");
     }
 ?>

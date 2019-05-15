@@ -42,12 +42,12 @@ class default_paths {
         $this->logo_cabecalho = $this->logo . "cb-am.png";
         $this->logo_adjust = $this->logo . "logo-adjust.css";
         $this->background = $this->img . "background.png";
-        $this->overflow = $this->default_css . "overflow.css";
+        $this->overflow = $this->default_css . "overflow_y.css";
         $this->form = $this->default_css . "form.css";
         $this->navbar_do_cabecalho = $this->default_navbars . "navbar_do_cabecalho.php";
         $this->navbar_do_rodape = $this->default_navbars . "navbar_do_rodape.php";
         $this->jquery = $this->pasta_raiz . "jquery.min.js";
-        $this->colors = $this->pasta_raiz . "colors.css";
+        $this->colors = $this->pasta_raiz . "colors/colors.css";
         $this->icones = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
         $this->logout = $this->pasta_raiz . "logout/index.php";
     }

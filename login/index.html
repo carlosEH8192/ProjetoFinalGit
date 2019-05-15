@@ -4,32 +4,28 @@
     <title>Login</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="<?= $bootstrap_css; ?>" />
-    <link rel="stylesheet" href="<?= $adjust; ?>" />
-    <link rel="stylesheet" href="<?= $colors; ?>" />
-    <link rel="stylesheet" href="<?= $icones; ?>" />
-    <link rel="stylesheet" href="<?= $overflow; ?>" />
-    <link rel="stylesheet" href="<?= $form; ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_bootstrap_css(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_adjust(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_colors(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_icones(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_overflow(); ?>" />
+    <link rel="stylesheet" href="<?= $paths->get_form(); ?>" />
 </head>
-<body background="<?= $background; ?>">
-    <?php include_once($navbar_do_cabecalho); // Caminho para um arquivo PHP isolado; ?>
+<body background="<?= $paths->get_background(); ?>">
+    <?php include_once($paths->get_navbar_do_cabecalho()); // Caminho para um arquivo PHP isolado; ?>
 
     <div class="container-fluid">
         <h1 class="col-sm-12">Login</h1>
         <form action="loga_aluno.php" method="post" class="form-horizontal">
             <div class="form-group">
-                <label for="inp-email" class="col-sm-1 control-label">
-                    E-mail: 
-                </label>
+                <label for="inp-email" class="col-sm-1 control-label">E-mail: </label>
                 <div class="col-sm-3">
                     <input type="email" class="form-control" id="inp-email" name="email" placeholder="E-mail" required autofocus />
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inp-senha" class="col-sm-1 control-label">
-                    Senha: 
-                </label>
+                <label for="inp-senha" class="col-sm-1 control-label">Senha: </label>
                 <div class="col-sm-3">
                     <input type="password" class="form-control" id="inp-senha" name="senha" placeholder="Senha" required />
                 </div>
@@ -43,9 +39,9 @@
         </form>
     </div>
 
-    <?php include_once($navbar_do_rodape); // Caminho para um arquivo PHP isolado. ?>
+    <?php include_once($paths->get_navbar_do_rodape()); // Caminho para um arquivo PHP isolado. ?>
 
-    <script src="<?= $jquery; ?>"></script>
-    <script src="<?= $bootstrap_js; ?>"></script>
+    <script src="<?= $paths->get_jquery(); ?>"></script>
+    <script src="<?= $paths->get_bootstrap_js(); ?>"></script>
 </body>
 </html>

@@ -9,5 +9,5 @@
     $aluno = $deus->get_dados_aluno($cpf);
 
     session_destroy();
-	print(json_encode($aluno));
+    print(json_encode($aluno));
 ?>
