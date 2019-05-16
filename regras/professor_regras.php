@@ -1,14 +1,14 @@
 <?php 
-	include_once("../dao/professor_dao.php");
+    include_once("../dao/professor_dao.php");
 
-	class professor_regras {
-		public function loga($email, $senha) {
-			$dao = new dao();
-			$professor = $dao->busca_por_email_e_senha($email, $senha);
-			if (is_null($professor))
-				return false;
+    class professor_regras {
+        public function loga($email, $senha) {
+            $dao = new dao();
+            $professor = $dao->busca_por_email_e_senha($email, $senha);
+            if (is_null($professor))
+                return false;
 
-			session_id("prof");
+            session_id("prof");
             session_start();
             $_SESSION["descricao"] = "prof";
             $_SESSION["nome_completo"] = $professor->get_nome_completo();
@@ -21,6 +21,6 @@
             session_write_close();
 
             return true;
-		}
-	}
+        }
+    }
 ?>
