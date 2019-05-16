@@ -1,5 +1,5 @@
 <?php
-class inicializador_de_sessao_de_login {
+class inicializador_de_sessao_login {
     public function adm() {
         session_id("admLogin");
         session_start();
