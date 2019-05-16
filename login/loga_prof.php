@@ -1,8 +1,12 @@
 <?php
-    include_once("../deus/Deus.php");
-    $deus = new Deus();
+    include_once("../regras/professor_regras.php");
+    $regras = new professor_regras();
 
-    $email = $_POST["email"];
-    $senha = $_POST["senha"];
-    $deus->loga_prof($email, $senha);
+    if ($regras->login($_POST["email"], $_POST["senha"]))
+        header("Location: ../profesor/index.php");
+    else {
+        echo("<h1>Erro ao Fazer Login! Verifique o <u>E-mail</u> e a <u>Senha</u> informados.</h1>");
+        sleep(2.5);
+        header("Location: form_prof.php");
+    }
 ?>

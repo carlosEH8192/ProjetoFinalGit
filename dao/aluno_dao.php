@@ -33,6 +33,17 @@
             return $aluno;
         }
 
+        public function busca_por_email_e_senha($email, $senha) {
+            $query = "SELECT * FROM aluno WHERE email = '${email}' AND senha = '${senha}'";
+            $resultado = $this->database->consulta($query, "Erro ao Buscar Aluno por E-mail e Senha!");
+
+            $aluno = null;
+            if ($row = $resultado->fetch_assoc())
+                $aluno = $this->constroi_aluno_usando_fetch_assoc($row);
+
+            return $aluno;
+        }
+
         public function busca_varios($filtro) {
             $query = "SELECT * FROM aluno";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;

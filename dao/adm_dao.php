@@ -18,6 +18,12 @@
             return $adm;
         }
 
+        public function busca_por_username_e_senha($username, $senha) {
+            $query = "SELECT username, senha FROM adm WHERE username = '${username}' AND senha = '${senha}'";
+            $resultado = $this->database->consulta($query, "Erro ao Buscar Administrador por Username e Senha!");
+            return $resultado;
+        }
+
         public function busca_varios($filtro) {
             $query = "SELECT * FROM adm";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
