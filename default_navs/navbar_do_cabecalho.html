@@ -42,10 +42,10 @@
             <!-- NAVBAR LOGIN -->
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                    if ($validacao_existe_eh_aluno)
-                        include_once($navbar_do_cabecalho_logado);
+                    if ($descricao_existe_e_eh_aluno)
+                        include_once("navbar_do_cabecalho_logado.html");
                     else
-                        include_once($navbar_do_cabecalho_deslogado);
+                        include_once("navbar_do_cabecalho_deslogado.html");
                 ?>
             </ul>
         </div><!-- .navbar-collapse -->
