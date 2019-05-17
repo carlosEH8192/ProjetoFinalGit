@@ -1,7 +1,13 @@
 <!-- NAVBAR DE USUÁRIO NÃO LOGADO -->
-<li>
-    <a href="<?= $paths->get_login_aluno(); ?>">
-        <span class="glyphicon glyphicon-user"></span>
-        &nbsp; Login
-    </a>
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		<span class="glyphicon glyphicon-user"></span>
+		&nbsp; Login
+        <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="<?= $paths->get_login_aluno(); ?>">Aluno</a></li>
+		<li><a href="<?= $paths->get_login_adm(); ?>">Administrador</a></li>
+		<li><a href="<?= $paths->get_login_professor(); ?>">Professor</a></li>
+	</ul>
 </li>
