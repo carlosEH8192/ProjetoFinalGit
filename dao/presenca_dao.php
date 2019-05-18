@@ -7,15 +7,18 @@
 
         public function __construct() { $this->database = new database(); }
 
+        private function cria_presenca_com_mysqli_result($resultado) {
+            $presencas = array();
+            while ($row = $resultado->fetch_assoc())
+                array_push($presencas, new presenca($row["dia"], $row["cod_aluno"], $row["cod_nome_turma"]));
+
+            return (count($presencas) == 1) ? $presencas[0] : $presencas;
+        }
+
         public function busca($codigo) {
             $query = "SELECT * FROM presenca WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Presença!");
-
-            $presenca = null;
-            if ($row = $resultado->fetch_assoc())
-                $presenca = new presenca($row["dia"], $row["cod_aluno"], $rows["nome_turma"]);
-
-            return $presenca;
+            return $this->cria_presenca_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
@@ -24,13 +27,9 @@
                 "INNER JOIN aluno AS a ON p.cod_aluno = a.codigo " .
                 "INNER JOIN nome_turma AS n_turma ON p.cod_nome_turma = n_turma.codigo";
             $query .= !is_null($filtro) ? " WHERE a.nome_completo LIKE '%${filtro}%'" : null;
+            
             $resultado = $this->consulta($query, "Erro ao Buscar Presenças!");
-
-            $presencas = array();
-            while ($row = $resultado->fetch_assoc())
-                array_push($presencas, new presenca($row["dia"], $row["cod_aluno"], $rows["nome_turma"]));
-
-            return $presencas;
+            return $this->cria_presenca_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $dia, $cod_aluno, $nome_turma) {

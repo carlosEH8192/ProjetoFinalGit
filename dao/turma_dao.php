@@ -7,15 +7,18 @@
 
         public function __construct() { $this->database = new database(); }
 
+        private function cria_turmas_com_mysqli_result($resultado) {
+            $turmas = array();
+            while ($row = $resultado->fetch_assoc())
+                array_push($turmas, new turma($row["cod_nome_turma"], $row["cod_aluno"], $row["cod_professor"], $row["cod_curso"]));
+
+            return (count($turmas) == 1) ? $turmas[0] : $turmas;
+        }
+
         public function busca($codigo) {
             $query = "SELECT * FROM turma WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Turma!");
-
-            $turma = null;
-            if ($row = $resultado->fetch_assoc())
-                $turma = new turma($row["cod_nome_turma"], $row["cod_aluno"], $row["cod_professor"], $row["cod_curso"]);
-
-            return $turma;
+            return $this->cria_turmas_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
@@ -26,13 +29,9 @@
                 "INNER JOIN professor AS p ON t.cod_professor = p.codigo " .
                 "INNER JOIN curso AS c ON t.cod_curso = c.codigo";
             $query .= !is_null($filtro) ? " WHERE a.nome_completo LIKE '%${filtro}%'" : null;
+            
             $resultado = $this->database->consulta($query, "Erro ao Buscar Turmas!");
-
-            $turmas = array();
-            while ($row = $resultado->fetch_assoc())
-                array_push($turmas, new turma($row["cod_nome_turma"], $row["cod_aluno"], $row["cod_professor"], $row["cod_curso"]));
-
-            return $turmas;
+            return $this->cria_turmas_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $cod_nome_turma, $cod_aluno, $cod_professor, $cod_curso) {
