@@ -7,33 +7,31 @@
 
         public function __construct() { $this->database = new database(); }
 
+        private function cria_adms_com_mysqli_result($resultado) {
+            $adms = array();
+            while ($row = $resultado->fetch_assoc())
+                array_push($adms, new adm($row["username"], $row["senha"]));
+
+            return (count($adms) == 1) ? $adms[0] : $adms;
+        }
+
         public function busca($codigo) {
             $query = "SELECT * FROM adm WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administrador!");
-
-            $adm = null;
-            if ($row = $resultado->fetch_assoc())
-                $adm = new adm($row["username"], $row["senha"]);
-
-            return $adm;
+            return $this->cria_adms_com_mysqli_result($resultado);
         }
 
         public function busca_por_username_e_senha($username, $senha) {
             $query = "SELECT username, senha FROM adm WHERE username = '${username}' AND senha = '${senha}'";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administrador por Username e Senha!");
-            return $resultado;
+            return $this->cria_adms_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM adm";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administradores!");
-
-            $adms = array();
-            while ($rows = $resultado->fetch_assoc())
-                array_push($adms, new adm($rows["username"], $rows["senha"]));
-
-            return $adms;
+            return $this->cria_adms_com_mysqli_result($resultado); 
         }
 
         public function atualiza($codigo, $username, $senha) {
