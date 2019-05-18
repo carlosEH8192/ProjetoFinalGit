@@ -7,29 +7,25 @@
 
         public function __construct() { $this->database = new database(); }
 
+        private function cria_cursos_com_mysqli_result($resultado) {
+            $cursos = array();
+            while ($row = $resultado->fetch_assoc())
+                array_push($cursos, new curso($row["nome"], $row["carga_horaria"]))
+
+            return (count($cursos) == 1) ? $cursos[0] : $cursos;
+        }
+
         public function busca($codigo) {
             $query = "SELECT * FROM curso WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Curso!");
-            
-            $curso = null;
-            if ($row = $resultado->fetch_assoc())
-                $curso = new curso($row["nome"], $row["carga_horaria"]);
-
-            return $curso;
+            return $this->cria_cursos_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM curso";
             $query .= !is_null($filtro) ? " WHERE nome LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Cursos!");
-
-            $cursos = array();
-            while ($row = $resultado->fetch_assoc()) {
-                $curso = new curso($row["nome"], $row["carga_horaria"]);
-                array_push($cursos, $curso);
-            }
-
-            return $cursos;
+            return $this->cria_cursos_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $nome, $carga_horaria) {
