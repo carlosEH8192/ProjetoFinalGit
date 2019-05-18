@@ -7,8 +7,7 @@
     if ((new verificacao())->sessao()) {
         $username = $_SESSION["username"];
         include_once("index.html");
-    }
-    else {
+    } else {
         $html = "<h1>Acesso Negado!</h1>";
         (new redirecionador_com_delay())->renderiza_html_e_redireciona_para_pagina_com_delay($html, $paths->get_inicio());
     }

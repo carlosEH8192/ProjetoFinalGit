@@ -1,12 +1,14 @@
 <?php
     include_once("../../default_paths.php");
+    include_once("../../redirecionamento_com_delay.php");
     include_once("../verificacao.php");
-    include_once("../obtentor_de_caminhos.php");
 
+    $paths = new default_paths();
     if ((new verificacao())->sessao()) {
-        $navbar_do_cabecalho_adm = (new obtentor_de_caminhos())->navbar_do_cabecalho_adm();
-        $paths = new default_paths();
-        include_once("index.html");
-    } else
-        echo("<h1>Acesso Negado!</h1>");
+        $username = $_SESSION["username"];
+        include_once("insere_turma.html");
+    } else {
+        $html = "<h1>Acesso Negado!</h1>";
+        (new redirecionador_com_delay())->renderiza_html_e_redireciona_para_pagina_com_delay($html, $paths->get_inicio());
+    }
 ?>
