@@ -1,6 +1,6 @@
 <nav class="navbar bg-logo" id="nav-logo"> 
     <div class="container-fluid">
-        <img class="img-responsive" id="alcidesmaya-logo" src="<?= $logo_cabecalho; ?>" alt="alcidesmaya">
+        <img class="img-responsive" id="alcidesmaya-logo" src="<?= $paths->get_logo_cabecalho(); ?>" alt="alcidesmaya">
     </div>
 </nav>
 <nav class="navbar bg-menu mg-bt">
@@ -44,7 +44,7 @@
 
                         <!-- MENU LOGIN -->
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?= $logout; ?>">Logout</a></li>
+                            <li><a href="<?= $paths->get_logout(); ?>">Logout</a></li>
                         </ul>
                     </a>
                 </li>

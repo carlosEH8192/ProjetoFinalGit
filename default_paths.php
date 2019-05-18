@@ -109,6 +109,7 @@ class default_paths {
     }
 
     //region Getters Iniciais
+    public function get_pasta_raiz() { return $this->pasta_raiz; }
     public function get_inicio() { return $this->inicio; }
     public function get_quem_somos() { return $this->quem_somos; }
     public function get_contato() { return $this->contato; }

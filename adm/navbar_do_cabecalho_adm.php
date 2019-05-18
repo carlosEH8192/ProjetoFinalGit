@@ -1,6 +1,6 @@
 <?php
     $username = $_SESSION["username"];
-    $adm = $pasta_raiz . "adm/";
+    $adm = $paths->get_pasta_raiz() . "adm/";
     $gestao_adms = $adm . "adms/index.php";
     $gestao_alunos = $adm . "alunos/index.php";
     $gestao_cursos = $adm . "cursos/index.php";
