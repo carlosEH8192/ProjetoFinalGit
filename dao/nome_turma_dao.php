@@ -7,27 +7,25 @@
 
         public function __construct() { $this->database = new database(); }
 
+        private function cria_nome_turmas_com_mysqli_result($resultado) {
+            $nome_turmas = array();
+            while ($row = $resultado->fetch_assoc())
+                array_push($nome_turmas, new nome_turma($row["nome"]));
+
+            return (count($nome_turmas) == 1) ? $nome_turmas[0] ? $nome_turmas;
+        }
+
         public function busca($codigo) {
             $query = "SELECT * FROM nome_turma WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Nome de Turma!");
-
-            $nome_turma = null;
-            if ($row = $resultado->fetch_assoc())
-                $adm = new nome_turma($row["nome"]);
-
-            return $nome_turma;
+            return $this->cria_nome_turmas_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM nome_turma";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Nomes de Turma!");
-
-            $nomes_turma = array();
-            while ($row = $resultado->fetch_assoc())
-                array_push($nomes_turma, new nome_turma($row["username"]));
-
-            return $nomes_turma;
+            return $this->cria_nome_turmas_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $nome) {
