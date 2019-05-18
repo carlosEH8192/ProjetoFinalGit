@@ -8,54 +8,43 @@
 
         public function __construct() { $this->database = new database(); }
 
-        private function constroi_aluno_usando_fetch_assoc($row) {
-            $aluno_builder = new aluno_builder();
-            $aluno_builder->nome_completo($row["nome_completo"])
-                ->sexo($row["sexo"])
-                ->telefone_celular($row["telefone_celular"])
-                ->telefone_fixo($row["telefone_fixo"])
-                ->rg($row["rg"])
-                ->cpf($row["cpf"])
-                ->email($row["email"])
-                ->senha($row["senha"]);
+        private function cria_alunos_com_mysqli_result($resultado) {
+            $alunos = array();
+            while ($row = $resultado->fetch_assoc()) {
+                $aluno_builder = new aluno_builder();
+                $aluno_builder->nome_completo($row["nome_completo"])
+                    ->sexo($row["sexo"])
+                    ->telefone_celular($row["telefone_celular"])
+                    ->telefone_fixo($row["telefone_fixo"])
+                    ->rg($row["rg"])
+                    ->cpf($row["cpf"])
+                    ->email($row["email"])
+                    ->senha($row["senha"]);
 
-            return $aluno_builder->constroi();
+                $aluno = $aluno_builder->constroi();
+                array_push($alunos, $aluno);
+            }
+
+            return (count($aluno) == 1) ? $alunos[0] : $alunos;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM aluno WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Aluno!");
-
-            $aluno = null;
-            if ($row = $resultado->fetch_assoc())
-                $aluno = $this->constroi_aluno_usando_fetch_assoc($row);
-
-            return $aluno;
+            return $this->cria_alunos_com_mysqli_result($resultado);
         }
 
         public function busca_por_email_e_senha($email, $senha) {
             $query = "SELECT * FROM aluno WHERE email = '${email}' AND senha = '${senha}'";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Aluno por E-mail e Senha!");
-
-            $aluno = null;
-            if ($row = $resultado->fetch_assoc())
-                $aluno = $this->constroi_aluno_usando_fetch_assoc($row);
-
-            return $aluno;
+            return $this->cria_alunos_com_mysqli_result($resultado);
         }
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM aluno";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Alunos!");
-
-            $adms = array();
-            while ($row = $resultado->fetch_assoc()) {
-                $adm = $this->constroi_aluno_usando_fetch_assoc($row);
-                array_push($adms, $adm));
-            }
-
-            return $adms;
+            return $this->cria_alunos_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $nome_completo, $sexo, $telefone_celular, $telefone_fixo, $rg, $cpf, $email, $senha) {
