@@ -1,6 +1,6 @@
-<?php 
+<?php
     include_once("database.php");
-    include_once("../model/adm.php");
+    include_once(__DIR__ . "/../model/adm.php");
 
     class adm_dao {
         private $database;
