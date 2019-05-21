@@ -45,7 +45,7 @@
         var codigo = location.search.split('codigo=')[1];
 
         function buscaAdm(codigo) {
-            $.get('busca_adms.php', { codigo: codigo }, function(admJson) {
+            $.get('_busca_adms.php', { codigo: codigo }, function(admJson) {
                 var adm = JSON.parse(admJson);
                 $('#inp-username').val(adm.username);
             });

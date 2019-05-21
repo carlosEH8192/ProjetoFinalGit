@@ -14,7 +14,7 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Novo Administrador</h1>
-        <form class="form-horizontal" method="post" onsubmit="return insereAdm(this, event);">
+        <form class="form-horizontal" method="post" onsubmit="return insereAdm(event);">
             <!-- USERNAME -->
             <div class="form-group">
                 <label for="inp-username" class="col-sm-2 control-label">Username: </label>
@@ -42,13 +42,14 @@
     <script src="<?= $paths->get_jquery(); ?>"></script>
     <script src="<?= $paths->get_bootstrap_js(); ?>"></script>
     <script>
-        function insereAdm(form, ev) {
-            ev.preventDefault();
+        function insereAdm(event) {
+            event.preventDefault();
+
+            var msgDeErro = 'Erro ao Inserir Administrador! Por favor, tente Inserir novamente mais tarde.';
 
             var username = $('#inp-username').val();
             var senha = $('#inp-senha').val();
             var dados = { username: username, senha: senha };
-            var msgDeErro = 'Erro ao Inserir Administrador! Por favor, tente Inserir novamente mais tarde.';
 
             $.post('_insere_adm.php', dados)
                 .done(function(resposta) {
