@@ -12,13 +12,13 @@
             while ($row = $resultado->fetch_assoc())
                 array_push($nome_turmas, new nome_turma($row["nome"]));
 
-            return (count($nome_turmas) == 1) ? $nome_turmas[0] ? $nome_turmas;
+            return $nome_turmas;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM nome_turma WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Nome de Turma!");
-            return $this->cria_nome_turmas_com_mysqli_result($resultado);
+            return $this->cria_nome_turmas_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {

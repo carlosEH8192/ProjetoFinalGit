@@ -23,13 +23,13 @@
                 array_push($professores, $professor);
             }
 
-            return (count($professores) == 1) ? $professores[0] : $professores;
+            return $professores;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM professor WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Professor!");
-            return $this->cria_professor_com_mysqli_result($resultado);
+            return $this->cria_professor_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {

@@ -12,13 +12,13 @@
             while ($row = $resultado->fetch_assoc())
                 array_push($presencas, new presenca($row["dia"], $row["cod_aluno"], $row["cod_nome_turma"]));
 
-            return (count($presencas) == 1) ? $presencas[0] : $presencas;
+            return $presencas;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM presenca WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Presença!");
-            return $this->cria_presenca_com_mysqli_result($resultado);
+            return $this->cria_presenca_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {

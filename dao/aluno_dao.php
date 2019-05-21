@@ -25,19 +25,19 @@
                 array_push($alunos, $aluno);
             }
 
-            return (count($aluno) == 1) ? $alunos[0] : $alunos;
+            return $alunos;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM aluno WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Aluno!");
-            return $this->cria_alunos_com_mysqli_result($resultado);
+            return $this->cria_alunos_com_mysqli_result($resultado)[0];
         }
 
         public function busca_por_email_e_senha($email, $senha) {
             $query = "SELECT * FROM aluno WHERE email = '${email}' AND senha = '${senha}'";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Aluno por E-mail e Senha!");
-            return $this->cria_alunos_com_mysqli_result($resultado);
+            return $this->cria_alunos_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {

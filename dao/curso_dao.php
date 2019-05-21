@@ -12,13 +12,13 @@
             while ($row = $resultado->fetch_assoc())
                 array_push($cursos, new curso($row["nome"], $row["carga_horaria"]))
 
-            return (count($cursos) == 1) ? $cursos[0] : $cursos;
+            return $cursos;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM curso WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Curso!");
-            return $this->cria_cursos_com_mysqli_result($resultado);
+            return $this->cria_cursos_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {
