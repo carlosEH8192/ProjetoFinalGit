@@ -1,8 +1,12 @@
 <?php
-    include_once("ProjetoFinalGit/deus/Deus.php");
+    include_once("../../dao/adm_dao.php");
+    $dao = new adm_dao();
 
-    $deus = new Deus();
+    $resultado = false;
     $codigo = $_POST["codigo"];
 
-    print($deus->delete_adm($codigo));
+    if (!is_null($codigo))
+        $resultado = $dao->deleta($codigo);
+
+    echo($resultado);
 ?>

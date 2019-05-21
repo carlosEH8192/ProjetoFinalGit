@@ -46,16 +46,16 @@
                 '<th scope="row">@cod</th>' +
                 '<td>@username</td>' +
                 '<td><a href="atualiza_adm.php?codigo=@cod" class="btn btn-default">Editar</a></td>' +
-                '<td><button class="btn btn-danger" onclick="deletaAdm(@cod);">Excluir</button></td>' +
+                '<td><button class="btn btn-danger" onclick="deletaAdm(@cod)">Excluir</button></td>' +
             '</tr>';
 
-        function filtra(ev, el) {
+        function filtra(ev, input) {
             if(ev.which == 13)
-                buscaAdms(el.value);
+                buscaAdms(input.value);
         }
 
         function buscaAdms(filtro) {
-            $.get('busca_adms.php', { filtro: filtro }, function(adms) {
+            $.get('_busca_adms.php', { filtro: filtro }, function(adms) {
                 montaTabela(JSON.parse(adms));
             });
         }
@@ -74,7 +74,7 @@
         }
 
         function deletaAdm(codigo) {
-            $.post("deleta_adm.php", { codigo: codigo }, function() {
+            $.post("_deleta_adm.php", { codigo: codigo }, function() {
                 buscaAdms($("#pesquisa").val());
             });
         }
