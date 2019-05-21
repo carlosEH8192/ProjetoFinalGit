@@ -10,28 +10,28 @@
         private function cria_adms_com_mysqli_result($resultado) {
             $adms = array();
             while ($row = $resultado->fetch_assoc())
-                array_push($adms, new adm($row["username"], $row["senha"]));
+                array_push($adms, new adm($row["codigo"], $row["username"], $row["senha"]));
 
-            return (count($adms) == 1) ? $adms[0] : $adms;
+            return $adms;
         }
 
         public function busca($codigo) {
             $query = "SELECT * FROM adm WHERE codigo = ${codigo}";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administrador!");
-            return $this->cria_adms_com_mysqli_result($resultado);
+            return $this->cria_adms_com_mysqli_result($resultado)[0];
         }
 
         public function busca_por_username_e_senha($username, $senha) {
             $query = "SELECT username, senha FROM adm WHERE username = '${username}' AND senha = '${senha}'";
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administrador por Username e Senha!");
-            return $this->cria_adms_com_mysqli_result($resultado);
+            return $this->cria_adms_com_mysqli_result($resultado)[0];
         }
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM adm";
             $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Administradores!");
-            return $this->cria_adms_com_mysqli_result($resultado); 
+            return $this->cria_adms_com_mysqli_result($resultado);
         }
 
         public function atualiza($codigo, $username, $senha) {
@@ -40,7 +40,7 @@
         }
 
         public function insere($username, $senha) {
-            $query = "INSERT INTO adm VALUES('${username}', '${senha}')";
+            $query = "INSERT INTO adm(username, senha) VALUES('${username}', '${senha}')";
             return $this->database->consulta($query, "Erro ao Inserir Administrador!");
         }
 
