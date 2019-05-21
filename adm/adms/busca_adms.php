@@ -1,19 +1,13 @@
 <?php
-    include_once("ProjetoFinalGit/deus/Deus.php");    
-    $deus = new Deus();
+    include_once("../../dao/adm_dao.php");
+    $dao = new adm_dao();
 
-    $codigo = '';
-    $filtro = '';
+    $resultado = null;
+    if (isset($_GET["codigo"]))
+        $resultado = $dao->busca(intval($_GET["codigo"]));
+    else if (isset($_GET["filtro"])) {
+        $resultado = $dao->busca_varios($_GET["filtro"]);
+    }
 
-    $dados_retorno = null;
-
-    if(isset($_GET["codigo"])) {
-        $codigo = $_GET["codigo"];
-        $dados_retorno = $deus->recupera_adm($codigo);
-    } else if(isset($_GET["filtro"])) {
-        $filtro = $_GET["filtro"];
-        $dados_retorno = $deus->recupera_adms($filtro);
-    }    
-    
-    print(json_encode($dados_retorno));
+    echo(json_encode($resultado))
 ?>

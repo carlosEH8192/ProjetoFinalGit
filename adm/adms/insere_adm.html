@@ -45,24 +45,24 @@
         function insereAdm(form, ev) {
             ev.preventDefault();
 
-            var username = $("#inp-username").val();
-            var senha = $("#inp-senha").val();
+            var username = $('#inp-username').val();
+            var senha = $('#inp-senha').val();
+            var dados = { username: username, senha: senha };
+            var msgDeErro = 'Erro ao Inserir Administrador! Por favor, tente Inserir novamente mais tarde.';
 
-            $.post(
-                "insere_adm_script.php",
-                { username: username, senha: senha },
-                trataResposta
-            );
-        }
-
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert('Conta criada com Sucesso!');
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert('Erro ao criar Conta! Por favor, tente criar outra mais tarde.');
+            $.post('_insere_adm.php', dados)
+                .done(function(resposta) {
+                    if (resposta == true) {
+                        alert('Administrador Inserido com Sucesso!');
+                        window.location.href = 'index.php';
+                    } else {
+                        alert(msgDeErro);
+                        $('#inp-username').select();
+                    }
+                })
+                .fail(function() {
+                    alert(msgDeErro);
+                });
         }
     </script>
 </body>

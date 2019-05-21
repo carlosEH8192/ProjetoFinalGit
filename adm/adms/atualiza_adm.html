@@ -14,7 +14,7 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Editar Administrador</h1>
-        <form class="form-horizontal" method="post" onsubmit="return updateAdm(this, event)">
+        <form class="form-horizontal" method="post" onsubmit="return atualizaAdm(this, event)">
             <!-- USERNAME -->
             <div class="form-group">
                 <label for="inp-username" class="col-sm-2 control-label">Username: </label>
@@ -44,39 +44,31 @@
     <script>
         var codigo = location.search.split('codigo=')[1];
 
-        function fazRequisicaoGet(codigo) {
-            $.get('get_adm_adms.php', { codigo: codigo }, function(dadosAdm) {                
-                var dadosJson = JSON.parse(dadosAdm);
-                $("#inp-username").val(dadosJson.username);
+        function buscaAdm(codigo) {
+            $.get('busca_adms.php', { codigo: codigo }, function(admJson) {
+                var adm = JSON.parse(admJson);
+                $('#inp-username').val(adm.username);
             });
         }
 
-        function updateAdm(form, ev) {
+        function atualizaAdm(form, ev) {
             ev.preventDefault();
 
-            var username = $("#inp-username").val();
-            var senha = $("#inp-senha").val();
+            var username = $('#inp-username').val();
+            var senha = $('#inp-senha').val();
+            var dados = { codigo: codigo, username: username, senha: senha };
 
-            $.post(
-                "update_adm_script.php",
-                { codigo: codigo, username: username, senha: senha },
-                trataResposta
-            );
+            $.post('_atualiza_adm.php', dados)
+                .done(function() {
+                    alert('Administrador Atualizado com Sucesso!');
+                    window.location.href = 'index.php';
+                })
+                .fail(function() {
+                    alert('Erro ao Atualizar Administrador! Por favor, tente novamente mais tarde.');
+                });
         }
 
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert("Conta atualizada com Sucesso!");
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert("Erro ao atualizar Conta! Por favor, tente atualizar mais tarde.");
-        }
-
-        $(function() {
-            fazRequisicaoGet(codigo);
-        });
+        $(function() { buscaAdm(codigo); });
     </script>
 </body>
 </html>

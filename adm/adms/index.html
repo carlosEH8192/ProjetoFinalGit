@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-md-12">
-            <table class="table table-hover" id="tbl">
+            <table id="tabela" class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -41,62 +41,45 @@
     <script src="<?= $paths->get_jquery(); ?>"></script>
     <script src="<?= $paths->get_bootstrap_js(); ?>"></script>
     <script>
-        var formato = 
-            '<tr>'+
+        var formatoTr = 
+            '<tr>' +
                 '<th scope="row">@cod</th>' +
                 '<td>@username</td>' +
-                '<td>' +
-                    '<a href="update_adm.php?codigo=@cod" class="btn btn-default">' +
-                        'Editar' +
-                    '</a>' +
-                '</td>' +
-                '<td>' +
-                    '<button class="btn btn-danger" onclick="deletaAdmin(@cod);">' +
-                        'Excluir' +
-                    '</button>' +
-                '</td>' +
-            '</tr>\n';
+                '<td><a href="atualiza_adm.php?codigo=@cod" class="btn btn-default">Editar</a></td>' +
+                '<td><button class="btn btn-danger" onclick="deletaAdm(@cod);">Excluir</button></td>' +
+            '</tr>';
 
-        function retornaAdministradores(filtro) {
-            $.get('get_adm_adms.php', { filtro: filtro }, function(dadosAdm) {
-                montaTable(JSON.parse(dadosAdm));
-            });
-        }
-        
         function filtra(ev, el) {
             if(ev.which == 13)
-                retornaAdministradores(el.value);
+                buscaAdms(el.value);
         }
 
-        function montaTable(dadosJson) {
-            var tbl$ = $('#tbl');
-            tbl$.find('tbody').empty();
-
-            var html = '';
-
-            for(var i = 0; i < dadosJson.length; i++) {
-                var dadoLocal = dadosJson[i];
-                
-                html += formato
-                    .replace('@cod', dadoLocal.codigo)
-                    .replace('@username', dadoLocal.username)
-                    .replace('@cod', dadoLocal.codigo)
-                    .replace('@cod', dadoLocal.codigo)
-            }
-
-            tbl$.find('tbody').html(html);            
-        }
-
-        function deletaAdmin(codigo) {
-            $.post("delete_adm.php", { codigo: codigo }, function(resultado) {
-                var pesquisa = $("#pesquisa").val();
-                retornaAdministradores(pesquisa);
+        function buscaAdms(filtro) {
+            $.get('busca_adms.php', { filtro: filtro }, function(adms) {
+                montaTabela(JSON.parse(adms));
             });
         }
 
-        $(function() {
-            retornaAdministradores('');
-        });
+        function montaTabela(json) {
+            var tr = null;
+            var $tbody = $('#tabela tbody');
+            $tbody.empty();
+
+            for (var i = 0; i < json.length; i++) {
+                tr += formatoTr.replace(/@cod/g, json[i].codigo)
+                    .replace('@username', json[i].username)
+            }
+
+            $tbody.html(tr);
+        }
+
+        function deletaAdm(codigo) {
+            $.post("deleta_adm.php", { codigo: codigo }, function() {
+                buscaAdms($("#pesquisa").val());
+            });
+        }
+
+        $(function() { buscaAdms(null); });
     </script>
 </body>
 </html>
