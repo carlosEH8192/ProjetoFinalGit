@@ -54,17 +54,22 @@
         function atualizaAdm(form, ev) {
             ev.preventDefault();
 
+            var msgDeErro = 'Erro ao Atualizar Administrador! Por favor, tente novamente mais tarde.';
             var username = $('#inp-username').val();
             var senha = $('#inp-senha').val();
             var dados = { codigo: codigo, username: username, senha: senha };
 
             $.post('_atualiza_adm.php', dados)
-                .done(function() {
-                    alert('Administrador Atualizado com Sucesso!');
-                    window.location.href = 'index.php';
+                .done(function(resposta) {
+                    if (resposta == true)
+                        window.location.href = 'index.php';
+                    else {
+                        alert(msgDeErro);
+                        $('#inp-username').select();
+                    }
                 })
                 .fail(function() {
-                    alert('Erro ao Atualizar Administrador! Por favor, tente novamente mais tarde.');
+                    alert(msgDeErro);
                 });
         }
 

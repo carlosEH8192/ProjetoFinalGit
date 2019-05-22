@@ -46,7 +46,6 @@
             event.preventDefault();
 
             var msgDeErro = 'Erro ao Inserir Administrador! Por favor, tente Inserir novamente mais tarde.';
-
             var username = $('#inp-username').val();
             var senha = $('#inp-senha').val();
             var dados = { username: username, senha: senha };
@@ -61,9 +60,7 @@
                         $('#inp-username').select();
                     }
                 })
-                .fail(function() {
-                    alert(msgDeErro);
-                });
+                .fail(function() { alert(msgDeErro); });
         }
     </script>
 </body>
