@@ -14,17 +14,13 @@ class Crud {
 
     busca() {
         var filtro = (this.$inputFiltra.val() != null) ? this.$inputFiltra.val() : null;
-        console.log()
-
         $.get(this.uriBusca, { filtro: filtro }, (jsonResposta) => {
             this.montaTabela(JSON.parse(jsonResposta));
         });
     }
 
-    limpaTabela() { this.$tbody.empty(); }
-
     montaTabela(jsonResposta) {
-        this.limpaTabela();
+        this.$tbody.empty();
         var trs = this.geraTrs(jsonResposta);
         this.$tbody.html(trs);
     }
@@ -33,8 +29,6 @@ class Crud {
     geraTrs(jsonResposta) { throw 'Função "geraTrs(jsonResposta)" deve ser implementada antes de ser usada.' }
 
     deleta(codigo) {
-        $.post(this.uriDeleta, { codigo: codigo }, () => {
-            this.busca();
-        });
+        $.post(this.uriDeleta, { codigo: codigo }, () => { this.busca(); });
     }
 }
