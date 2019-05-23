@@ -1,7 +1,8 @@
 <?php 
-    include_once("../model/aluno.php");
+    include_once(__DIR__ . "/../model/aluno.php");
 
     class aluno_builder {
+        private $codigo;
         private $nome_completo;
         private $sexo;
         private $telefone_celular;
@@ -10,6 +11,11 @@
         private $cpf;
         private $email;
         private $senha;
+
+        public function codigo($codigo) {
+            $this->codigo = $codigo;
+            return $this;
+        }
 
         public function nome_completo($nome_completo) {
             $this->nome_completo = $nome_completo;
@@ -52,7 +58,10 @@
         }
 
         public function constroi() {
-            return new aluno($this->nome_completo, $this->sexo, $this->telefone_celular, $this->telefone_fixo, $this->rg, $this->cpf, $this->email, $this->senha);
+            return new aluno(
+                $this->codigo, $this->nome_completo, $this->sexo, $this->telefone_celular,
+                $this->telefone_fixo, $this->rg, $this->cpf, $this->email, $this->senha
+            );
         }
     }
 ?>

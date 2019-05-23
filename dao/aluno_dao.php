@@ -1,7 +1,7 @@
 <?php 
     include_once("database.php");
-    include_once("../model/aluno.php");
-    include_once("../builder/aluno_builder.php");
+    include_once(__DIR__ . "/../model/aluno.php");
+    include_once(__DIR__ . "/../builder/aluno_builder.php");
     
     class aluno_dao {
         private $database;
@@ -12,7 +12,8 @@
             $alunos = array();
             while ($row = $resultado->fetch_assoc()) {
                 $aluno_builder = new aluno_builder();
-                $aluno_builder->nome_completo($row["nome_completo"])
+                $aluno_builder->codigo($row["codigo"])
+                    ->nome_completo($row["nome_completo"])
                     ->sexo($row["sexo"])
                     ->telefone_celular($row["telefone_celular"])
                     ->telefone_fixo($row["telefone_fixo"])
@@ -42,7 +43,7 @@
 
         public function busca_varios($filtro) {
             $query = "SELECT * FROM aluno";
-            $query .= !is_null($filtro) ? " WHERE username LIKE '%${filtro}%'" : null;
+            $query .= !is_null($filtro) ? " WHERE nome_completo LIKE '%${filtro}%'" : null;
             $resultado = $this->database->consulta($query, "Erro ao Buscar Alunos!");
             return $this->cria_alunos_com_mysqli_result($resultado);
         }

@@ -11,6 +11,7 @@ class database {
         $this->username = "root";
         $this->password = null;
         $this->database_name = "alcidesmaya_tech";
+        $this->erro = null;
         $this->conecta();
     }
 
@@ -25,7 +26,7 @@ class database {
     }
 
     public function consulta($query, $mensagem_or_die) {
-        $resultado = $this->database->query($query) or die($mensagem_or_die);
+        $resultado = $this->database->query($query) or die($mensagem_or_die . ": " . $this->database->error);
         return $resultado;
     }
 }

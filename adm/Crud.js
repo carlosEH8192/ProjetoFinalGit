@@ -1,10 +1,10 @@
 class Crud {
     constructor(uriBusca, uriDeleta, formatoTr, $tbody, $inputFiltra) {
-        this.uriBusca = uriBusca;
-        this.uriDeleta = uriDeleta;
-        this.formatoTr = formatoTr; // Formato da Table Row
-        this.$tbody = $tbody; // Elemento tbody dos registros filtrados;
-        this.$inputFiltra = $inputFiltra; // Elemento Input de Filtragem;
+        this.uriBusca = uriBusca; // URI de Busca de Registros;
+        this.uriDeleta = uriDeleta; // URI de Remoção de Registros;
+        this.formatoTr = formatoTr; // Formato da Table Row que é inserido na tbody da Tabela dos Registros Filtrados;
+        this.$tbody = $tbody; // Tbody da Tabela dos Registros Filtrados;
+        this.$inputFiltra = $inputFiltra; // Elemento Input de Filtro;
     }
 
     filtra(evento) {
@@ -26,7 +26,7 @@ class Crud {
     }
 
     // Função deve ser implementada
-    geraTrs(jsonResposta) { throw 'Função "geraTrs(jsonResposta)" deve ser implementada antes de ser usada.' }
+    geraTrs(jsonResposta) { throw 'Função "geraTrs(jsonResposta)" deve ser implementada antes de ser usada.'; }
 
     deleta(codigo) {
         $.post(this.uriDeleta, { codigo: codigo }, () => { this.busca(); });

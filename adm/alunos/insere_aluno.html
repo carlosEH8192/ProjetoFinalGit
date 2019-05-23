@@ -14,7 +14,7 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Novo Aluno</h1>
-        <form class="form-horizontal" method="post" onsubmit="return insereAluno(this, event);">
+        <form class="form-horizontal" method="post" onsubmit="return insereAluno(this, event)">
             <!-- NOME COMPLETO -->
             <div class="form-group">
                 <label for="inp-nome-completo" class="col-sm-2 control-label">Nome completo: </label>
@@ -28,7 +28,7 @@
                 <label class="col-sm-2 control-label">Sexo: </label>
                 <div class="col-sm-3">
                     <label class="radio-inline">
-                        <input type="radio" id="radio-m"name="sexo" value="M" required />
+                        <input type="radio" id="radio-m" name="sexo" value="M" required />
                         Masculino
                     </label>
                     <label class="radio-inline">
@@ -40,17 +40,17 @@
 
             <!-- TELEFONE CELULAR -->
             <div class="form-group">
-                <label for="inp-celular" class="col-sm-2 control-label">Telefone Celular: </label>
+                <label for="inp-telefone-celular" class="col-sm-2 control-label">Telefone Celular: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inp-celular" name="celular" placeholder="Telefone Celular" required />
+                    <input type="text" class="form-control" id="inp-telefone-celular" name="celular" placeholder="Telefone Celular" required />
                 </div>
             </div>
 
             <!-- TELEFONE FIXO -->
             <div class="form-group">
-                <label for="inp-fixo" class="col-sm-2 control-label">Telefone Fixo: </label>
+                <label for="inp-telefone-fixo" class="col-sm-2 control-label">Telefone Fixo: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inp-fixo" name="fixo" placeholder="Telefone Fixo" required />
+                    <input type="text" class="form-control" id="inp-telefone-fixo" name="fixo" placeholder="Telefone Fixo" required />
                 </div>
             </div>
 
@@ -101,31 +101,28 @@
         function insereAluno(form, ev) {
             ev.preventDefault();
 
-            var nomeCompleto = $('#inp-nome-completo').val();
-            var sexo = $("form input[name=sexo]:checked").val();
-            var celular = $('#inp-celular').val();
-            var fixo = $('#inp-fixo').val();
-            var rg = $('#inp-rg').val();
-            var cpf = $('#inp-cpf').val();
-            var email = $('#inp-email').val();
-            var senha = $('#inp-senha').val();
+            var dados = {
+                nomeCompleto: $('#inp-nome-completo').val(),
+                sexo: $('input[name=sexo]:checked').val(),
+                telefoneCelular: $('#inp-telefone-celular').val(),
+                telefoneFixo: $('#inp-telefone-fixo').val(),
+                rg: $('#inp-rg').val(),
+                cpf: $('#inp-cpf').val(),
+                email: $('#inp-email').val(),
+                senha: $('#inp-senha').val()
+            };
 
-            $.post("insere_aluno_script.php", {
-                nomeCompleto: nomeCompleto, sexo: sexo,
-                celular: celular, fixo: fixo,
-                rg: rg, cpf: cpf,
-                email: email, senha: senha
-            }, trataResposta);
-        }
-
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert('Conta criada com Sucesso!');
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert('Erro ao criar Conta! Por favor, tente novamente mais tarde.');
+            var msgDeErro = 'Erro ao Inserir Aluno! Por favor, tente novamente mais tarde.';
+            $.post("_insere_aluno.php", dados)
+                .done(function(resposta) {
+                    if (resposta == true)
+                        window.location.href = 'index.php';
+                    else {
+                        alert(msgDeErro);
+                        $('#inp-nome-completo').select();
+                    }
+                })
+                .fail(function() { alert(msgDeErro); });
         }
     </script>
 </body>

@@ -17,5 +17,5 @@ Crud.prototype.geraTrs = function(admsJson) {
     return tr;
 };
 
-var crud = new Crud('_busca_adms.php', '_deleta_adm.php', formatoTr, $('#tabela tbody'), $('#filtro'));
+var crud = new Crud('_busca_adms.php', '_deleta_adm.php', formatoTr, $('#tabela tbody'), $('#inp-filtro'));
 crud.busca();

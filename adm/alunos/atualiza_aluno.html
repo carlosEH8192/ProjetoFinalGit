@@ -14,7 +14,7 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Editar Aluno</h1>
-        <form class="form-horizontal" method="post" onsubmit="return updateAluno(this, event);">
+        <form class="form-horizontal" method="post" onsubmit="atualizaAluno(event)">
             <!-- NOME COMPLETO -->
             <div class="form-group">
                 <label for="inp-nome-completo" class="col-sm-2 control-label">Nome completo: </label>
@@ -40,17 +40,17 @@
 
             <!-- TELEFONE CELULAR -->
             <div class="form-group">
-                <label for="inp-celular" class="col-sm-2 control-label">Telefone Celular: </label>
+                <label for="inp-telefone-celular" class="col-sm-2 control-label">Telefone Celular: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inp-celular" name="celular" placeholder="Telefone Celular" required />
+                    <input type="text" class="form-control" id="inp-telefone-celular" name="telefone-celular" placeholder="Telefone Celular" required />
                 </div>
             </div>
 
             <!-- TELEFONE FIXO -->
             <div class="form-group">
-                <label for="inp-fixo" class="col-sm-2 control-label">Telefone Fixo: </label>
+                <label for="inp-telefone-fixo" class="col-sm-2 control-label">Telefone Fixo: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inp-fixo" name="fixo" placeholder="Telefone Fixo" required />
+                    <input type="text" class="form-control" id="inp-telefone-fixo" name="telefone-fixo" placeholder="Telefone Fixo" required />
                 </div>
             </div>
 
@@ -100,59 +100,57 @@
     <script>
         var codigo = location.search.split('codigo=')[1];
 
-        function fazRequisicaoGet(codigo) {
-            $.get('get_aluno_alunos.php', { codigo: codigo }, preencheInputs);
+        function buscaAluno(codigo) {
+            $.get('_busca_alunos.php', { codigo: codigo }, preencheCampos);
         }
 
-        function preencheInputs(dadosAluno) {
-            var dadosJson = JSON.parse(dadosAluno);
-
-            $('#inp-nome-completo').val(dadosJson.nomeCompleto);
-
-            dadosJson.sexo == 'M' ?
-                $('#radio-m').prop('checked', true) :
+        function preencheCampos(jsonAluno) {
+            var aluno = JSON.parse(jsonAluno);
+            
+            $('#inp-nome-completo').val(aluno.nomeCompleto);
+            
+            if (aluno.sexo == 'M')
+                $('#radio-m').prop('checked', true);
+            else
                 $('#radio-f').prop('checked', true);
 
-            $('#inp-celular').val(dadosJson.telefoneCelular);
-            $('#inp-fixo').val(dadosJson.telefoneFixo);
-            $('#inp-rg').val(dadosJson.rg);
-            $('#inp-cpf').val(dadosJson.cpf);
-            $('#inp-email').val(dadosJson.email);
-            $('#inp-senha').val(dadosJson.senha);
+            $('#inp-telefone-celular').val(aluno.telefoneCelular);
+            $('#inp-telefone-fixo').val(aluno.telefoneFixo);
+            $('#inp-rg').val(aluno.rg);
+            $('#inp-cpf').val(aluno.cpf);
+            $('#inp-email').val(aluno.email);
+            $('#inp-senha').val(aluno.senha);
         }
 
-        function updateAluno(form, ev) {
+        function atualizaAluno(ev) {
             ev.preventDefault();
 
-            var nomeCompleto = $('#inp-nome-completo').val();
-            var sexo = $("form input[name=sexo]:checked").val();
-            var celular = $('#inp-celular').val();
-            var fixo = $('#inp-fixo').val();
-            var rg = $('#inp-rg').val();
-            var cpf = $('#inp-cpf').val();
-            var email = $('#inp-email').val();
-            var senha = $('#inp-senha').val();
+            var dados = {
+                codigo: codigo,
+                nomeCompleto: $('#inp-nome-completo').val(),
+                sexo: $('input[name=sexo]:checked').val(),
+                telefoneCelular: $('#inp-telefone-celular').val(),
+                telefoneFixo: $('#inp-telefone-fixo').val(),
+                rg: $('#inp-rg').val(),
+                cpf: $('#inp-cpf').val(),
+                email: $('#inp-email').val(),
+                senha: $('#inp-senha').val()
+            };
 
-            $.post("update_aluno_script.php", {
-                codigo: codigo, nomeCompleto: nomeCompleto, sexo: sexo,
-                celular: celular, fixo: fixo, rg: rg,
-                cpf: cpf, email: email, senha: senha
-            }, trataResposta);
+            var msgDeErro = 'Erro ao Atualizar Aluno (a)! Por favor, tente novamente mais tarde.';
+            $.post("_atualiza_aluno.php", dados)
+                .done(function(resposta) {
+                    if (resposta == true)
+                        window.location.href = 'index.php';
+                    else {
+                        alert(msgDeErro);
+                        $('#inp-nome-completo').select();
+                    }
+                })
+                .fail(function() { alert(msgDeErro); })
         }
 
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert("Conta atualizada com Sucesso!");
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert("Erro ao atualizar Conta! Por favor, tente atualizar mais tarde.");
-        }
-
-        $(function() {
-            fazRequisicaoGet(codigo);
-        });
+        $(function() { buscaAluno(codigo); });
     </script>
 </body>
 </html>
