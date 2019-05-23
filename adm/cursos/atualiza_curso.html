@@ -14,7 +14,7 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Editar Curso</h1>
-        <form class="form-horizontal" method="post" onsubmit="return updateCurso(this, event)">
+        <form class="form-horizontal" method="post" onsubmit="return atualizaCurso(event)">
             <!-- NOME -->
             <div class="form-group">
                 <label for="inp-nome" class="col-sm-2 control-label">Nome: </label>
@@ -45,43 +45,39 @@
     <script>
         var codigo = location.search.split('codigo=')[1];
 
-        function fazRequisicaoGet(codigo) {
-            $.get('get_curso_cursos.php', { codigo: codigo }, preencheInputs);
+        function buscaCurso(codigo) {
+            $.get('_busca_cursos.php', { codigo: codigo }, preencheInputs);
         }
 
-        function preencheInputs(dadosCurso) {
-            var dadosJson = JSON.parse(dadosCurso);
-
-            $('#inp-nome').val(dadosJson.nome);
-            $('#inp-carga-horaria').val(dadosJson.cargaHoraria);
+        function preencheInputs(cursoJson) {
+            var curso = JSON.parse(cursoJson);
+            $('#inp-nome').val(curso.nome);
+            $('#inp-carga-horaria').val(curso.cargaHoraria);
         }
 
-        function updateCurso(form, ev) {
+        function atualizaCurso(ev) {
             ev.preventDefault();
 
-            var nome = form[0].value;
-            var cargaHoraria = form[1].value;
-
-            $.post('update_curso_script.php', {
+            var dados = {
                 codigo: codigo,
-                nome: nome,
-                cargaHoraria: cargaHoraria
-            }, trataResposta);
+                nome: $('#inp-nome').val(),
+                cargaHoraria: $('#inp-carga-horaria').val()
+            };
+
+            var msgDeErro = 'Erro ao Atualizar Curso! Por favor, tente novamente mais tarde.';
+            $.post('_atualiza_curso.php', dados)
+                .done(function(resposta) {
+                    if (resposta == true)
+                        window.location.href = 'index.php';
+                    else {
+                        alert(msgDeErro);
+                        $('#inp-nome').select();
+                    }
+                })
+                .fail(function() { alert(msgDeErro) });
         }
 
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert('Curso atualizado com Sucesso!');
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert('Erro ao atualizar Curso! Por favor, tente atualizar mais tarde.');
-        }
-
-        $(function() {
-            fazRequisicaoGet(codigo);
-        });
+        $(function() { buscaCurso(codigo); });
     </script>
 </body>
 </html>

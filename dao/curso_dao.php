@@ -1,6 +1,6 @@
 <?php
     include_once("database.php");
-    include_once("../model/curso.php");
+    include_once(__DIR__ . "/../model/curso.php");
 
     class curso_dao {
         private $database;
@@ -10,7 +10,7 @@
         private function cria_cursos_com_mysqli_result($resultado) {
             $cursos = array();
             while ($row = $resultado->fetch_assoc())
-                array_push($cursos, new curso($row["nome"], $row["carga_horaria"]))
+                array_push($cursos, new curso($row["codigo"], $row["nome"], $row["carga_horaria"]));
 
             return $cursos;
         }
@@ -35,12 +35,12 @@
 
         public function insere($nome, $carga_horaria) {
             $query = "INSERT INTO curso(nome, carga_horaria) VALUES('${nome}', ${carga_horaria})";
-            return $this->consulta($query, "Erro ao Inserir Curso!");
+            return $this->database->consulta($query, "Erro ao Inserir Curso!");
         }
 
         public function deleta($codigo) {
             $query = "DELETE FROM curso WHERE codigo = ${codigo}";
-            return $this->consulta($query, "Erro ao Deletar Curso!");
+            return $this->database->consulta($query, "Erro ao Deletar Curso!");
         }
     }
 ?>

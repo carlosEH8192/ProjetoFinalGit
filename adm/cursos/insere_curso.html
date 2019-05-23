@@ -14,12 +14,12 @@
 
     <div class="container-fluid">
         <h1 class="col-md-12">Novo Curso</h1>
-        <form class="form-horizontal" method="post" onsubmit="return insereCurso(this, event);">
+        <form class="form-horizontal" method="post" onsubmit="insereCurso(event)">
             <!-- NOME -->
             <div class="form-group">
                 <label for="inp-nome" class="col-sm-2 control-label">Nome: </label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inp-nome" name="nome" placeholder="Nome" required autofocus />
+                    <input type="text" class="form-control" id="inp-nome" placeholder="Nome" required autofocus />
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label for="inp-carga-horaria" class="col-sm-2 control-label">Carga horária: </label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="inp-carga-horaria" name="carga-horaria" placeholder="Carga horária" required />
+                    <input type="number" class="form-control" id="inp-carga-horaria" placeholder="Carga horária" required />
                 </div>
             </div>
 
@@ -43,26 +43,26 @@
     <script src="<?= $paths->get_jquery(); ?>"></script>
     <script src="<?= $paths->get_bootstrap_js(); ?>"></script>
     <script>
-        function insereCurso(form, ev) {
+        function insereCurso(ev) {
             ev.preventDefault();
 
-            var nome = form[0].value;
-            var cargaHoraria = form[1].value;
+            var dados = {
+                nome: $('#inp-nome').val(),
+                cargaHoraria: $('#inp-carga-horaria').val()
+            };
 
-            $.post('insere_curso_script.php', {
-                nome: nome,
-                cargaHoraria: cargaHoraria
-            }, trataResposta);
-        }
+            var msgDeErro = 'Erro ao Inserir Curso! Por favor, tente novamente mais tarde.';
 
-        function trataResposta(retorno) {
-            if(retorno == '1') {
-                alert('Curso criado com Sucesso!');
-                document.forms[0].reset();
-                window.location.href = 'index.php';
-
-            } else
-                alert('Erro ao criar Curso! Por favor, tente novamente mais tarde.');
+            $.post('_insere_curso.php', dados)
+                .done(function(resposta) {
+                    if (resposta == true)
+                        window.location.href = 'index.php';
+                    else {
+                        alert(msgDeErro);
+                        $('#inp-nome').select();
+                    }
+                })
+                .fail(function() { alert(msgDeErro); });
         }
     </script>
 </body>
