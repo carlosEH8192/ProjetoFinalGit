@@ -3,6 +3,7 @@
     $dao = new adm_dao();
 
     $resultado = false;
+
     $username = $_POST["username"];
     $senha = $_POST["senha"];
 

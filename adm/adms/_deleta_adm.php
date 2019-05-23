@@ -3,8 +3,8 @@
     $dao = new adm_dao();
 
     $resultado = false;
-    $codigo = $_POST["codigo"];
 
+    $codigo = $_POST["codigo"];
     if (!is_null($codigo))
         $resultado = $dao->deleta($codigo);
 

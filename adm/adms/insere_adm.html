@@ -52,10 +52,9 @@
 
             $.post('_insere_adm.php', dados)
                 .done(function(resposta) {
-                    if (resposta == true) {
-                        alert('Administrador Inserido com Sucesso!');
+                    if (resposta == true)
                         window.location.href = 'index.php';
-                    } else {
+                    else {
                         alert(msgDeErro);
                         $('#inp-username').select();
                     }
